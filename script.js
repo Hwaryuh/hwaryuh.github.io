@@ -33,7 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', () => {
         let current = '';
         
-        // 1. 기본 로직: 스크롤 위치에 따라 섹션 감지
         sections.forEach(section => {
             const sectionTop = section.offsetTop;
             if (scrollY >= (sectionTop - 200)) {
@@ -41,7 +40,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // 3. 네비게이션 활성화 적용
         navLinks.forEach(link => {
             link.classList.remove('active');
             if (link.getAttribute('href').includes(current)) {

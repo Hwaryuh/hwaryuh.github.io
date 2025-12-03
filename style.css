@@ -20,7 +20,6 @@
     --main-font: 'galmuri', 'Pixelify Sans', sans-serif; 
 }
 
-/* --- 기본 설정 --- */
 body {
     background-color: var(--bg-color);
     color: var(--text-main);
@@ -28,7 +27,6 @@ body {
     margin: 0;
     padding: 0;
     line-height: 1.5;
-    /* 픽셀 폰트가 흐릿해지지 않게 처리 */
     -webkit-font-smoothing: none;
 }
 
@@ -45,7 +43,6 @@ ul { list-style: none; padding: 0; margin: 0; }
     min-height: 100vh;
 }
 
-/* --- [헤더: 프로필 & 연혁] --- */
 .profile-section {
     display: flex;
     gap: 40px;
@@ -56,12 +53,10 @@ ul { list-style: none; padding: 0; margin: 0; }
     position: relative;
 }
 
-/* 장식용 네 모서리 */
 .corner { position: absolute; width: 6px; height: 6px; background: var(--text-gold); }
 .tl { top: -3px; left: -3px; } .tr { top: -3px; right: -3px; }
 .bl { bottom: -3px; left: -3px; } .br { bottom: -3px; right: -3px; }
 
-/* 왼쪽: 기본 정보 */
 .profile-info {
     flex: 1;
     text-align: center;
@@ -94,7 +89,6 @@ ul { list-style: none; padding: 0; margin: 0; }
     align-self: flex-start;
 }
 
-/* 오른쪽: 연혁 (Timeline) */
 .profile-history {
     flex: 1.5;
     padding-left: 10px;
@@ -116,7 +110,6 @@ ul { list-style: none; padding: 0; margin: 0; }
     font-size: 0.95rem;
 }
 
-/* 타임라인 점과 선 */
 .timeline li::before {
     content: '';
     position: absolute;
@@ -132,14 +125,12 @@ ul { list-style: none; padding: 0; margin: 0; }
     margin-left: 5px;
 }
 
-/* 모바일 대응 (프로필 세로 배치) */
 @media (max-width: 768px) {
     .profile-section { flex-direction: column; gap: 30px; }
     .profile-info { border-right: none; border-bottom: 1px dashed #444; padding-right: 0; padding-bottom: 30px; }
 }
 
 
-/* --- [메인 레이아웃 공통] --- */
 section { margin-bottom: 100px; }
 
 .main-category {
@@ -179,7 +170,6 @@ section { margin-bottom: 100px; }
     border-radius: 4px;
 }
 
-/* 그리드 시스템 (2열) */
 .grid-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -190,7 +180,6 @@ section { margin-bottom: 100px; }
 }
 
 
-/* --- [카드 스타일 A: 미디어 중심 (디자인, SFX)] --- */
 .media-card {
     background-color: #000;
     border: 1px solid var(--border-dim);
@@ -207,7 +196,7 @@ section { margin-bottom: 100px; }
     height: 240px;
     object-fit: contain;
     display: block;
-    background: #151515; /* 로딩 전 배경 */
+    background: #151515;
 }
 
 .media-caption {
@@ -225,7 +214,6 @@ section { margin-bottom: 100px; }
 }
 
 
-/* --- [카드 스타일 B: 개발/Bukkit (미디어 + 상세설명)] --- */
 .project-card {
     background-color: var(--card-bg);
     border: 1px solid var(--border-dim);
@@ -240,7 +228,6 @@ section { margin-bottom: 100px; }
     border-color: var(--border-gold);
 }
 
-/* 상단 미디어 영역 */
 .card-media-area {
     width: 100%;
     height: 200px;
@@ -259,7 +246,6 @@ section { margin-bottom: 100px; }
 }
 .project-card:hover .card-media-area img { opacity: 1; }
 
-/* 하단 텍스트 영역 */
 .card-info-area {
     padding: 20px;
     flex: 1;
@@ -290,7 +276,6 @@ section { margin-bottom: 100px; }
     line-height: 1.4;
 }
 
-/* 태그 */
 .tag {
     display: inline-block;
     background: #252525;
@@ -302,10 +287,8 @@ section { margin-bottom: 100px; }
     border: 1px solid #333;
 }
 
-/* --- 숨겨진 콘텐츠 (모달용) --- */
 .hidden-content { display: none; }
 
-/* --- [모달창 스타일] --- */
 .modal-overlay {
     display: none;
     position: fixed;
@@ -343,7 +326,6 @@ section { margin-bottom: 100px; }
     padding-right: 0;
 }
 
-/* 모달 닫기 버튼 */
 .close-btn {
     position: absolute;
     top: 15px; right: 15px;
@@ -355,7 +337,6 @@ section { margin-bottom: 100px; }
 }
 .close-btn:hover { color: #fff; }
 
-/* 모달 내부 콘텐츠 스타일 */
 .modal-body { padding: 40px; }
 
 .modal-title { 
@@ -409,7 +390,6 @@ html {
     scroll-behavior: smooth;
 }
 
-/* 사이드 내비게이션 스타일 */
 .side-nav {
     position: fixed;
     right: 75px;
@@ -420,7 +400,6 @@ html {
     gap: 20px;
     z-index: 100;
     
-    /* 본문 옆에 얇은 선 장식 */
     border-left: 2px solid #333;
     padding-left: 12px;
 }
@@ -434,7 +413,6 @@ html {
     cursor: pointer;
 }
 
-/* 마우스를 올리거나 활성화되었을 때 */
 .nav-item:hover,
 .nav-item.active {
     color: var(--text-gold);
@@ -443,11 +421,10 @@ html {
     text-shadow: 0 0 5px rgba(197, 160, 89, 0.3);
 }
 
-/* 활성화 시 왼쪽에 작은 점 표시 (타임라인 느낌) */
 .nav-item.active::before {
     content: '';
     position: absolute;
-    left: -20px; /* border-left 위치에 맞춤 */
+    left: -20px;
     top: 50%;
     transform: translateY(-50%);
     width: 5px;
@@ -456,7 +433,6 @@ html {
     box-shadow: 0 0 5px var(--text-gold);
 }
 
-/* 화면 너비가 1300px 이하일 때는 목차 숨김 (본문과 겹침 방지) */
 @media (max-width: 1300px) {
     .side-nav {
         display: none;
