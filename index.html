@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archive of murinn</title>
+    
+    <link rel="icon" type="image/png" href="icon/profile3.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="side-nav">
+        <a href="#profile" class="nav-item active">프로필</a>
+        <a href="#design" class="nav-item">디자인</a>
+        <a href="#dev" class="nav-item">개발</a>
+        <a href="#sfx" class="nav-item">SFX</a>
+    </nav>
+    
+    <div class="wrapper">
+        <header class="profile-section" id="profile">
+            <div class="corner tl"></div><div class="corner tr"></div>
+            <div class="corner bl"></div><div class="corner br"></div>
+
+            <!-- 왼쪽: 기본 정보 -->
+            <div class="profile-info">
+                <img src="icon/profile4.png" alt="Profile" class="profile-img">
+                <h1 class="profile-name">murinn</h1>
+                <p class="profile-detail"><img src="icon/discord.png" class="icon-small">@junkfoodkiller</p>
+                <p class="profile-detail">새로운 작업물은 계속 추가됩니다.</p>
+            </div>
+
+            <!-- 오른쪽: 연혁 (Status History) -->
+            <div class="profile-history">
+                <div class="history-title">▼ Chronicle</div>
+                <ul class="timeline">
+                    <li>
+                        <span style="color:#fff;">2025.04 ~ 현재</span><br>
+                        <span style="color:var(--text-gold);">Team Sem;colon</span>
+                    </li>
+                    <li>
+                        <span>2024.09 ~ 2025.03</span><br>
+                        1인 개발
+                    </li>
+                </ul>
+            </div>
+        </header>
+
+        
+
+        <section id="design">
+            <h2 class="main-category">디자인</h2>
+
+            <h3 class="sub-category">2D 픽셀 아트</h3>
+            <div class="grid-container">
+                <div class="media-card"><img src="icon/wip.png" class="media-content"></div>
+            </div>
+
+            <h3 class="sub-category">3D 로우폴리 모델</h3>
+            <div class="grid-container">
+                <div class="media-card"><img src="gif/3D/health_pack.gif" class="media-content"></div>
+                <div class="media-card"><img src="gif/3D/health_pack_mini.gif" class="media-content"></div>
+                <div class="media-card"><img src="png/3D/fur_hood_blue.png" class="media-content"></div>
+                <div class="media-card"><img src="png/3D/fur_hood_all.png" class="media-content"></div>
+                <div class="media-card"><img src="gif/3D/fox_walk.gif" class="media-content"></div>
+                <div class="media-card"><img src="gif/3D/shark_idle.gif" class="media-content"></div>
+                <div class="media-card"><img src="gif/3D/knight_sword_idle.gif" class="media-content"></div>
+                <div class="media-card"><img src="gif/3D/knight_spear_idle.gif" class="media-content"></div>
+                <div class="media-card"><img src="gif/3D/armor_head.gif" class="media-content"></div>
+                <div class="media-card"><img src="gif/3D/shields.gif" class="media-content"></div>
+                <div class="media-card"><img src="gif/3D/blinded_goddess_idle.gif" class="media-content"></div>
+                <div class="media-card"><img src="png/3D/awkworld_weapons.png" class="media-content"></div>
+            </div>
+            <h3 class="sub-category">VFX (BlockBench)</h3>
+            <div class="grid-container">
+                <div class="media-card"><img src="gif/vfx/lightning.gif" class="media-content"></div>
+                <div class="media-card"><img src="gif/vfx/digital_slash.gif" class="media-content"></div>
+                <div class="media-card"><img src="gif/vfx/poison_skull.gif" class="media-content"></div>
+            </div>
+        </section>
+
+
+
+        <section id="dev">
+            <h2 class="main-category">개발 (Java Edition)</h2>
+            <p class="info-note">모든 프로젝트의 제작 환경은 <span class="code-style">서버 사이드 / 바닐라 클라이언트</span>입니다.</p>
+            <h3 class="sub-category">Bukkit 플러그인</h3>
+            <div class="grid-container">
+                
+                <article class="project-card" onclick="openModal(this)">
+                    <div class="card-media-area"><img src="png/thumbnail/social.png"></div>
+                    <div class="card-info-area">
+                        <div>
+                            <h4 class="card-title">소셜 시스템</h4>
+                            <div class="card-meta-list"><div>㊊ 2024.10.06 ~ 2024.10.19</div><div>⚙ Env: 1.20.1</div></div>
+                        </div>
+                        <div class="card-desc">
+                            <span class="tag">개발</span>
+                            <p style="margin-top:8px;">플레이어 간 다양한 상호작용 추가 플러그인</p>
+                        </div>
+                    </div>
+                    <div class="hidden-content">
+                        <div class="h-title">소셜 시스템</div>
+                        <div class="h-desc">
+                            <div class="divider">
+                                <span class="tag">개발</span><br><br>
+                                제작 기간: 2024.10.06 ~ 2024.10.19<br>
+                                제작 환경: 1.20.1
+                            </div>
+                            플레이어 간 여러 상호작용(파티, 친구 추가, 거래) 기능을 추가합니다.<br>
+                        </div>
+                        <div class="h-media">
+                            <div class="modal-media-item">
+                                <video src="video/social/social_party.mp4" class="media-content" loop muted controls></video>
+                                <div class="modal-caption">▲ 파티 시스템 (BetterHUD 연동)</div>
+                            </div>
+                            <div class="modal-media-item">
+                                <video src="video/social/social_trade.mp4" class="media-content" loop muted controls></video>
+                                <div class="modal-caption">▲ 교환 시스템</div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="project-card" onclick="openModal(this)">
+                    <div class="card-media-area"><img src="png/thumbnail/smart_signal.png"></div>
+                    <div class="card-info-area">
+                        <div>
+                            <h4 class="card-title">SmartSignal - 스마트 핑 시스템</h4>
+                            <div class="card-meta-list"><div>㊊ 2025.01.18 ~ 2025.01.23</div><div>⚙ Env: 1.21.1</div></div>
+                        </div>
+                        <div class="card-desc">
+                            <span class="tag">개발</span><span class="tag">바닐라 셰이더</span><span class="tag">3D 모델링</span><span class="tag">SFX</span>
+                            <p style="margin-top:8px;">스마트 핑 플러그인</p>
+                        </div>
+                    </div>
+                    <div class="hidden-content">
+                        <div class="h-title">SmartSignal - 스마트 핑 시스템</div>
+                        <div class="h-desc">
+                            <div class="divider">
+                                <span class="tag">개발</span><span class="tag">바닐라 셰이더</span><span class="tag">3D 모델링</span><span class="tag">SFX</span><br><br>
+                                제작 기간: 2025.01.18 ~ 2025.01.23<br>
+                                제작 환경: 1.21.1
+                            </div>
+                            화면 조작에 방해되지 않는 스마트 핑을 제공합니다.<br>
+                            위치 지정 / 엔티티 지정 각각이 적합한 표시를 하며, 파티원과의 거리 계산을 피드백합니다.
+                        </div>
+                        <div class="h-media">
+                            <div class="modal-media-item">
+                                <video src="video/smart_signal/smart_signal.mp4" class="media-content" loop controls></video>
+                                <div class="modal-caption">▲ 인게임</div>
+                                <video src="video/smart_signal/smart_signal_party.mp4" class="media-content" loop controls></video>
+                                <div class="modal-caption">▲ 파티원 시점(파티원과의 거리 계산)</div>
+                                <video src="video/smart_signal/smart_signal_height.mp4" class="media-content" loop controls></video>
+                                <div class="modal-caption">▲ ModelEngine 호환 - 모델의 높이를 고려하여 표시</div>
+                                <video src="video/smart_signal/smart_signal_update.mp4" class="media-content" loop controls></video>
+                                <div class="modal-caption">▲ 모델링 개선</div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="project-card" onclick="openModal(this)">
+                    <div class="card-media-area"><img src="png/thumbnail/visualpath.png"></div>
+                    <div class="card-info-area">
+                        <div>
+                            <h4 class="card-title">VisualPath - 컷신 시스템</h4>
+                            <div class="card-meta-list"><div>㊊ 2025.03.14 ~ 2025.03.24</div><div>⚙ Env: 1.21.4</div></div>
+                        </div>
+                        <div class="card-desc">
+                            <span class="tag">개발</span><span class="tag">바닐라 셰이더</span><span class="tag">2D 픽셀 아트</span>
+                            <p style="margin-top:8px;">HUD + 컷신 플러그인</p>
+                        </div>
+                    </div>
+
+                    <div class="hidden-content">
+                        <div class="h-title">VisualPath - 컷신 시스템</div>
+                        <div class="h-desc">
+                            <div class="divider">
+                                <span class="tag">개발</span><span class="tag">바닐라 셰이더</span><span class="tag">2D 픽셀 아트</span><br><br>
+                                제작 기간: 2025.03.14 ~ 2025.03.24<br>
+                                제작 환경: 1.21.4
+                            </div>
+                            위치들을 지정하여 각 지점을 자유롭게 이동할 수 있는 컷신을 만듭니다.<br>
+                            각 지점에 도착 시 방향키를 통해 다른 지점으로 이동할 수 있으며, HUD와 함께 시각적 연출도 가능합니다.<br>
+                        </div>
+                        <div class="h-media">
+                            <div class="modal-media-item">
+                                <video src="video/visualpath/visualpath_test.mp4" class="media-content" loop controls></video>
+                                <div class="modal-caption">▲ 인게임</div>
+                                <video src="video/visualpath/visualpath.mp4" class="media-content" loop controls></video>
+                                <div class="modal-caption">▲ 응용</div>
+                                <video src="video/visualpath/visualpath_impl.mp4" class="media-content" loop controls></video>
+                                <div class="modal-caption">▲ 응용 - ModelEngine API (테스트용 모델입니다)</div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="project-card" onclick="openModal(this)">
+                    <div class="card-media-area">
+                        <img src="png/thumbnail/healthbar.png">
+                    </div>
+                    <div class="card-info-area">
+                        <div>
+                            <h4 class="card-title">체력 바 시스템</h4>
+                            <div class="card-meta-list"><div>㊊ 2025.06.18 ~ 2025.06.20</div><div>⚙ Env: 1.21.4</div></div>
+                        </div>
+                        <div class="card-desc">
+                            <span class="tag">개발</span><span class="tag">2D 픽셀 아트</span>
+                            <p style="margin-top:8px;">커스텀 체력바 UI 플러그인</p>
+                        </div>
+                    </div>
+                    <div class="hidden-content">
+                        <div class="h-title">체력 바 시스템</div>
+                        <div class="h-desc">
+                            <div class="divider">
+                                <span class="tag">개발</span><span class="tag">2D 픽셀 아트</span><br><br>
+                                제작 기간: 2025.06.18 ~ 2025.06.20<br>
+                                제작 환경: 1.21.4
+                            </div>
+                            엔티티의 남은 체력을 표시합니다.<br>
+                            유저가 원하는 UI를 설정할 수 있으며, 패킷을 활용해 Per-Player로 표시합니다.
+                        </div>
+                        <div class="h-media">
+                            <div class="modal-media-item">
+                                <video src="video/healthbar/healthbar.mp4" class="media-content" loop controls></video>
+                                <video src="video/healthbar/healthbar_attack.mp4" class="media-content" loop controls></video>
+                                <div class="modal-caption">▲ 인게임</div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="project-card" onclick="openModal(this)">
+                    <div class="card-media-area">
+                        <img src="png/thumbnail/presentation.png">
+                    </div>
+                    <div class="card-info-area">
+                        <div>
+                            <h4 class="card-title">Presentation - 대본 시스템</h4>
+                            <div class="card-meta-list"><div>㊊ 2025.11.12 ~ 2025.11.12</div><div>⚙ Env: 1.21.4</div></div>
+                        </div>
+                        <div class="card-desc">
+                            <span class="tag">개발</span>
+                            <p style="margin-top:8px;">텍스트 애니메이션 및 상호작용 플러그인</p>
+                        </div>
+                    </div>
+
+                    <div class="hidden-content">
+                        <div class="h-title">Presentation - 대본 시스템</div>
+                        <div class="h-desc">
+                            <div class="divider">
+                                <span class="tag">개발</span><br><br>
+                                제작 기간: 2025.11.12 ~ 2025.11.12<br>
+                                제작 환경: 1.21.4
+                            </div>
+                            팀 프로젝트에서 사용된 시스템입니다.<br>
+                            yaml을 파싱, 유저가 원하는 문구를 페이지 단위로 표시할 수 있습니다.<br><br>
+                            태그: <br>
+                            - &lt;pause:틱&gt; : 해당 부분에서 틱만큼 멈춤<br>
+                            - &lt;event:문자열&gt; : ScriptPointEvent를 호출 / <span class="code-style">.getPoint()</span>를 통해 문자열에 따른 처리 지원
+                        </div>
+                        <div class="h-media">
+                            <div class="modal-media-item">
+                                <video src="video/presentation/presentation.mp4" class="media-content" loop controls></video>
+                                <div class="modal-caption">▲ 인게임</div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="project-card" onclick="openModal(this)">
+                    <div class="card-media-area"><img src="png/thumbnail/bbdriver.png"></div>
+                    <div class="card-info-area">
+                        <div>
+                            <h4 class="card-title">BBDriver - BlockBench 렌더링 시스템</h4>
+                            <div class="card-meta-list"><div>㊊ 2025.10.26 ~ 2025.10.26</div><div>⚙ Env: 1.21.4</div>
+                        </div>
+                        <div class="card-desc">
+                            <span class="tag">개발</span>
+                            <p style="margin-top:8px;">BlockBench 자유 모델 파싱 라이브러리</p>
+                        </div>
+                    </div>
+
+                    <div class="hidden-content">
+                        <div class="h-title">BBDriver - BlockBench 렌더링 시스템</div>
+                        <div class="h-desc">
+                            <div class="divider">
+                                <span class="tag">개발</span><br><br>
+                                제작 기간: 2025.10.26 ~ 2025.10.26<br>
+                                제작 환경: 1.21.4
+                            </div>
+                            BlockBench로 제작된 .bbmodel 파일을 파싱하는 라이브러리 플러그인입니다.<br>
+                            그룹(bone) 계층: 부모-자식 관계 설정, 애니메이션 재생 등 핵심적인 요소들을 인게임에서 렌더링합니다.
+                        </div>
+                        <div class="h-media">
+                            <div class="modal-media-item">
+                                <video src="video/bbdriver/bbdriver.mp4" class="media-content" loop controls></video>
+                                <div class="modal-caption">▲ 바닐라 아이템의 회전 중심점을 바꾼 애니메이션</div>
+                                <video src="video/bbdriver/bbdriver_fk.mp4" class="media-content" loop controls></video>
+                                <div class="modal-caption">▲ Forward Kinematics 구현</div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="project-card" onclick="openModal(this)">
+                    <div class="card-media-area"><img src="png/thumbnail/doppelganger.png"></div>
+                    <div class="card-info-area">
+                        <div>
+                            <h4 class="card-title">Doppelganger - 플레이어 애니메이션 시스템</h4>
+                            <div class="card-meta-list"><div>㊊ 2025.10.26 ~ 진행 중</div><div>⚙ Env: 1.20.4 ~ 1.21.8</div></div>
+                        </div>
+                        <div class="card-desc">
+                            <span class="tag">개발</span> <span class="tag">바닐라 셰이더</span>
+                            <p style="margin-top:8px;">3인칭 플레이어 애니메이션 플러그인</p>
+                        </div>
+                    </div>
+
+                    <div class="hidden-content">
+                        <div class="h-title">Doppelganger - 플레이어 애니메이션 시스템</div>
+                        <div class="h-desc">
+                            <div class="divider">
+                                <span class="tag">개발</span>
+                                <span class="tag">바닐라 셰이더</span><br><br>
+                                제작 기간: 2025.10.26 ~ 진행 중<br>
+                                제작 환경: 1.20.4 ~ 1.21.8
+                            </div>
+                            BBDriver 라이브러리를 활용한 플레이어 애니메이션 시스템입니다.<br>
+                            BlockBench를 통해 제작된 애니메이션을 재생할 수 있습니다.<br>
+                            모델의 텍스쳐 없이 플레이어의 고유 스킨을 사용하며, 스킨의 Slim 여부에 따라 자동으로 모델이 적용됩니다.
+                        </div>
+                        <div class="h-media">
+                            <div class="modal-media-item">
+                                <video src="video/doppelganger/doppelganger_test.mp4" class="media-content" loop controls></video>
+                                <div class="modal-caption">▲ 테스트 영상</div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+
+            <h3 class="sub-category">바닐라 셰이더 (Core)</h3>
+            <div class="grid-container">
+                <div>
+                    <div class="media-card">
+                        <video src="video/shaders/screen_shake.mp4" class="media-content" loop muted controls></video>
+                    </div>
+                    <div class="media-desc-outer">CloudWolfYT's Screen Shake 프로젝트를 1.21.4로 포팅</div>
+                </div>
+                <div>
+                    <div class="media-card">
+                        <video src="video/shaders/dynamic_fov.mp4" class="media-content" loop muted controls></video>
+                    </div>
+                    <div class="media-desc-outer">JNNGL's Dynamic FOV 프로젝트를 1.21.4로 포팅</div>
+                </div>
+            </div>
+
+
+            <h3 class="sub-category">MythicMobs</h3>
+            <p class="info-note">MythicMobs 특성상 단발적인 기능이 많아 영상이 적습니다만, 대부분을 구현할 수 있습니다. (외주 및 처리 경험 多)</p>
+            <div class="sub-sub-category">플레이어 스킬</div>
+            <div class="grid-container">
+                <div><video src="video/skills/skill_parried.mp4" class="media-content" loop controls></video></div>
+                <div><video src="video/skills/skill_shield.mp4" class="media-content" loop controls></video></div>
+                <div>
+                    <video src="video/skills/skill_shark.mp4" class="media-content" loop controls></video>
+                    <div class="media-desc-outer">두 위치의 거리를 계산한 투사체 구현</div>
+                </div>
+            </div>
+
+            <div class="sub-sub-category">몹 스킬</div>
+            <div class="grid-container">
+                <video src="video/skills/yumra.mp4" class="media-content" loop muted controls></video>
+                <video src="video/mobs/awkworld_boss_1.mp4" class="media-content" loop muted controls></video>
+            </div>
+
+            <div class="sub-sub-category">기타</div>
+            <div class="grid-container">
+                <video src="video/skills/health_pack.mp4" class="media-content" loop controls></video>
+            </div>
+        </section>
+
+
+
+         <section id="sfx">
+            <h2 class="main-category">SFX</h2>
+            <div class="grid-container">
+                <div>
+                    <div class="media-card">
+                        <video src="video/sfx/sfx_phone.mp4" class="media-content" loop controls></video>
+                    </div>
+                    <div class="media-desc-outer">개인 프로젝트: 오브젝트 SFX</div>
+                </div>
+                <div>
+                    <div class="media-card">
+                        <video src="video/sfx/sfx_chigi.mov" class="media-content" loop controls></video>
+                    </div>
+                    <div class="media-desc-outer">팀 프로젝트: 보스 SFX</div>
+                </div>
+                <div class="media-card"><img src="icon/wip.png" class="media-content"></div>
+            </div>
+        </section>
+
+        <footer>
+            <p>Discord: @junkfoodkiller<br>Email: hwaryuh@gmail.com</p>
+        </footer>
+
+    </div>
+    <div class="modal-overlay" id="modal" onclick="closeModal(event)">
+        <div class="modal-window" onclick="event.stopPropagation()">
+            <span class="close-btn" onclick="closeModal(event)">×</span>
+            <div class="modal-body" id="modalBody">
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,464 @@
+@font-face {
+    font-family: 'galmuri';
+    src: url('font/Galmuri9.ttf') format('truetype');
+}
+
+.icon-small {
+    width: 24px;
+    height: 24px;
+    vertical-align: -6px;
+    margin-right: 8px; 
+}
+
+:root {
+    --bg-color: #19171b;
+    --card-bg: #1b1b1e;
+    --text-main: #b0b0b0;
+    --text-gold: #c59f59;
+    --border-gold: #7d6331;
+    --border-dim: #373232;
+    --main-font: 'galmuri', 'Pixelify Sans', sans-serif; 
+}
+
+/* --- 기본 설정 --- */
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: var(--main-font);
+    margin: 0;
+    padding: 0;
+    line-height: 1.5;
+    /* 픽셀 폰트가 흐릿해지지 않게 처리 */
+    -webkit-font-smoothing: none;
+}
+
+* { box-sizing: border-box; }
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; padding: 0; margin: 0; }
+
+.wrapper {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    border-left: 1px solid #222;
+    border-right: 1px solid #222;
+    min-height: 100vh;
+}
+
+/* --- [헤더: 프로필 & 연혁] --- */
+.profile-section {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 80px;
+    border: 1px solid var(--border-gold);
+    background: rgb(27, 27, 30);
+    padding: 30px;
+    position: relative;
+}
+
+/* 장식용 네 모서리 */
+.corner { position: absolute; width: 6px; height: 6px; background: var(--text-gold); }
+.tl { top: -3px; left: -3px; } .tr { top: -3px; right: -3px; }
+.bl { bottom: -3px; left: -3px; } .br { bottom: -3px; right: -3px; }
+
+/* 왼쪽: 기본 정보 */
+.profile-info {
+    flex: 1;
+    text-align: center;
+    border-right: 1px dashed #444;
+    padding-right: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-img {
+    width: 120px;
+    height: 120px;
+    background-color: #000;
+    border: 2px solid var(--border-gold);
+    object-fit: cover;
+}
+
+.profile-name {
+    color: var(--text-gold);
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.profile-detail {
+    font-size: 0.9rem;
+    color: #888;
+    margin-bottom: 0px;
+    align-self: flex-start;
+}
+
+/* 오른쪽: 연혁 (Timeline) */
+.profile-history {
+    flex: 1.5;
+    padding-left: 10px;
+}
+
+.history-title {
+    color: var(--text-gold);
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #333;
+    padding-bottom: 5px;
+    display: inline-block;
+}
+
+.timeline li {
+    position: relative;
+    padding-left: 20px;
+    margin-bottom: 15px;
+    font-size: 0.95rem;
+}
+
+/* 타임라인 점과 선 */
+.timeline li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 6px;
+    height: 6px;
+    background-color: var(--border-gold);
+    border-radius: 50%;
+}
+.timeline {
+    border-left: 1px solid #333;
+    margin-left: 5px;
+}
+
+/* 모바일 대응 (프로필 세로 배치) */
+@media (max-width: 768px) {
+    .profile-section { flex-direction: column; gap: 30px; }
+    .profile-info { border-right: none; border-bottom: 1px dashed #444; padding-right: 0; padding-bottom: 30px; }
+}
+
+
+/* --- [메인 레이아웃 공통] --- */
+section { margin-bottom: 100px; }
+
+.main-category {
+    font-size: 2rem;
+    color: var(--text-gold);
+    border-bottom: 2px solid var(--border-gold);
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+}
+
+.sub-category {
+    font-size: 1.4rem;
+    color: #ddd;
+    margin-top: 50px;
+    margin-bottom: 20px;
+    padding-left: 15px;
+    border-left: 4px solid var(--border-gold);
+}
+
+.sub-sub-category {
+    font-size: 1.1rem;
+    color: #888;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.info-note {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 20px;
+}
+.code-style {
+    background: #222;
+    padding: 2px 6px;
+    color: var(--text-gold);
+    border-radius: 4px;
+}
+
+/* 그리드 시스템 (2열) */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+}
+@media (max-width: 700px) {
+    .grid-container { grid-template-columns: 1fr; }
+}
+
+
+/* --- [카드 스타일 A: 미디어 중심 (디자인, SFX)] --- */
+.media-card {
+    background-color: #000;
+    border: 1px solid var(--border-dim);
+    padding: 0px;
+    transition: all 0.3s;
+}
+.media-card:hover {
+    border-color: var(--text-gold);
+    box-shadow: 0 0 10px rgba(197, 160, 89, 0.2);
+}
+
+.media-content {
+    width: 100%;
+    height: 240px;
+    object-fit: contain;
+    display: block;
+    background: #151515; /* 로딩 전 배경 */
+}
+
+.media-caption {
+    padding: 10px 5px;
+    font-size: 0.9rem;
+    color: #999;
+    text-align: center;
+}
+
+.media-desc-outer {
+    margin-top: 10px;
+    font-size: 0.85rem;
+    color: #aaa;
+    line-height: 1.4;
+}
+
+
+/* --- [카드 스타일 B: 개발/Bukkit (미디어 + 상세설명)] --- */
+.project-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-dim);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s, border-color 0.3s;
+    cursor: pointer;
+}
+
+.project-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--border-gold);
+}
+
+/* 상단 미디어 영역 */
+.card-media-area {
+    width: 100%;
+    height: 200px;
+    background-color: #000;
+    border-bottom: 1px solid #333;
+    overflow: hidden;
+}
+
+.card-media-area img, 
+.card-media-area video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 1.0;
+    transition: opacity 0.3s;
+}
+.project-card:hover .card-media-area img { opacity: 1; }
+
+/* 하단 텍스트 영역 */
+.card-info-area {
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    color: var(--text-gold);
+    margin: 0 0 10px 0;
+    line-height: 1.3;
+}
+
+.card-meta-list {
+    font-size: 0.8rem;
+    color: #777;
+    margin-bottom: 15px;
+    border-left: 2px solid #444;
+    padding-left: 8px;
+}
+.card-meta-list div { margin-bottom: 2px; }
+
+.card-desc {
+    font-size: 0.95rem;
+    color: #ccc;
+    line-height: 1.4;
+}
+
+/* 태그 */
+.tag {
+    display: inline-block;
+    background: #252525;
+    color: #aaa;
+    font-size: 0.75rem;
+    padding: 2px 6px;
+    margin-right: 4px;
+    margin-bottom: 4px;
+    border: 1px solid #333;
+}
+
+/* --- 숨겨진 콘텐츠 (모달용) --- */
+.hidden-content { display: none; }
+
+/* --- [모달창 스타일] --- */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(2px);
+}
+
+.modal-overlay.active { display: flex; }
+
+.modal-window {
+    background: #151515;
+    width: 90%;
+    max-width: 900px;
+    max-height: 90vh;
+    border: 2px solid var(--border-gold);
+    padding: 0;
+    position: relative;
+    box-shadow: 0 0 30px rgba(197, 160, 89, 0.15);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.divider {
+    background: none; 
+    border: none;
+    border-bottom: 1px solid rgba(125, 99, 49, 0.5);
+    padding: 0 0 15px 0; 
+    margin-bottom: 20px; 
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* 모달 닫기 버튼 */
+.close-btn {
+    position: absolute;
+    top: 15px; right: 15px;
+    font-size: 2rem;
+    color: var(--text-gold);
+    cursor: pointer;
+    line-height: 0.5;
+    z-index: 10;
+}
+.close-btn:hover { color: #fff; }
+
+/* 모달 내부 콘텐츠 스타일 */
+.modal-body { padding: 40px; }
+
+.modal-title { 
+    font-size: 2rem; 
+    color: var(--text-gold); 
+    border-bottom: 1px dashed #444; 
+    padding-bottom: 15px; 
+    margin-bottom: 20px;
+}
+
+.modal-desc { 
+    font-size: 1rem; 
+    color: #ccc; 
+    margin-bottom: 30px; 
+    line-height: 1.6; 
+}
+
+.modal-media-list { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 30px; 
+}
+
+.modal-media-item img, 
+.modal-media-item video {
+    width: 100%;
+    height: 100%;
+    border: 1px solid #333;
+    display: block;
+}
+
+.modal-caption {
+    margin-top: 10px;
+    text-align: center;
+    color: #777;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+footer {
+    margin-top: 100px;
+    border-top: 1px solid #333;
+    padding-top: 30px;
+    text-align: center;
+    color: #555;
+    font-size: 0.8rem;
+}
+
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* 사이드 내비게이션 스타일 */
+.side-nav {
+    position: fixed;
+    right: 75px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 100;
+    
+    /* 본문 옆에 얇은 선 장식 */
+    border-left: 2px solid #333;
+    padding-left: 12px;
+}
+
+.nav-item {
+    color: #666;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+    position: relative;
+    font-family: var(--main-font);
+    cursor: pointer;
+}
+
+/* 마우스를 올리거나 활성화되었을 때 */
+.nav-item:hover,
+.nav-item.active {
+    color: var(--text-gold);
+    transform: translateX(5px);
+    font-weight: bold;
+    text-shadow: 0 0 5px rgba(197, 160, 89, 0.3);
+}
+
+/* 활성화 시 왼쪽에 작은 점 표시 (타임라인 느낌) */
+.nav-item.active::before {
+    content: '';
+    position: absolute;
+    left: -20px; /* border-left 위치에 맞춤 */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 5px;
+    height: 5px;
+    background-color: var(--text-gold);
+    box-shadow: 0 0 5px var(--text-gold);
+}
+
+/* 화면 너비가 1300px 이하일 때는 목차 숨김 (본문과 겹침 방지) */
+@media (max-width: 1300px) {
+    .side-nav {
+        display: none;
+    }
+}
