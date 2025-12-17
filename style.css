@@ -113,7 +113,7 @@ ul { list-style: none; padding: 0; margin: 0; }
 .timeline li::before {
     content: '';
     position: absolute;
-    left: 0;
+    left: -3px;
     top: 8px;
     width: 6px;
     height: 6px;
