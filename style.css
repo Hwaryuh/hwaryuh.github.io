@@ -205,8 +205,10 @@ a.team-name { cursor: pointer; }
 }
 @keyframes team-shine { to { background-position: -200% center; } }
 
-.contacts { margin-bottom: 12px; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; font-size: 14px; }
-.contacts a { text-decoration: none; }
+.profile-meta { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; row-gap: 16px; padding: 18px 0; border-top: 1px solid var(--line); }
+.meta-item { grid-column: span 3; display: flex; flex-direction: column; gap: 6px; min-width: 0; font-size: 14px; }
+.meta-label { font-size: 12px; letter-spacing: 0.06em; color: var(--muted); text-transform: uppercase; }
+.meta-item a { text-decoration: none; overflow-wrap: anywhere; }
 
 .contribs { margin: 0; padding: 0; list-style: none; border-top: 1.5px solid var(--fg); }
 
@@ -643,7 +645,7 @@ a.team-name { cursor: pointer; }
   .team-logo { width: 44px; height: 44px; border-radius: 10px; }
   .team-name { font-size: 20px; }
   .team-name .px { letter-spacing: 0; } /* Pretendard 20px 너비(155px)에 가깝게: 글자 158px + 더한 점 2px */
-  .contacts { margin-bottom: 10px; align-items: flex-start; font-size: 13px; }
+  .meta-item { grid-column: span 6; font-size: 13px; }
   .contrib { display: flex; flex-direction: column; gap: 4px; padding: 14px 0; }
   .contrib-server { order: 1; font-size: 16px; }
   .contrib-work { order: 2; font-size: 14px; }

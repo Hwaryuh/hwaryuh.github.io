@@ -75,19 +75,17 @@ const COLLECTIONS = [
     key: 'profile', label: 'Profile', single: true, folder: 'team',
     fields: [
       { key: 'name', label: '이름', type: 'text', required: true },
-      { key: 'discord', label: 'Discord', type: 'text' },
-      { key: 'discordId', label: 'Discord 사용자 ID', type: 'text', hint: '숫자만 입력하세요. 있으면 Discord 이름이 프로필 링크가 됩니다' },
-      { key: 'intro', label: '한 줄 소개', type: 'text', full: true },
-      { key: 'team.name', label: '팀 이름', type: 'text' },
+      { key: 'intro', label: '한 줄 소개', type: 'text' },
       { key: 'team.logo', label: '팀 로고', type: 'media', kind: 'image', file: 'logo' },
-      { key: 'team.url', label: '팀 링크', type: 'url', full: true },
+      { key: 'team.name', label: '팀 이름', type: 'text' },
+      { key: 'team.url', label: '팀 링크', type: 'url' },
+      { key: 'contacts', label: '연락처', type: 'contacts', full: true },
     ],
-  },
-  {
-    key: 'contacts', label: '연락처', titleKey: 'label',
-    list: (d) => d.profile.contacts,
-    fields: [F.id, { key: 'label', label: '이름', type: 'text', required: true, hint: '예: CONTACT, GITHUB' }, { key: 'value', label: '보이는 글', type: 'text', required: true }, { key: 'url', label: '링크', type: 'url', mailto: true, full: true, hint: 'https:// 주소나 mailto:메일 주소를 입력하세요.' }],
-    blank: () => ({ id: '', label: '', value: '', url: null }),
+    sections: [
+      { title: '기본', keys: ['name', 'intro'] },
+      { title: '팀', keys: ['team.logo', 'team.name', 'team.url'], className: 'team-form' },
+      { title: '연락처', keys: ['contacts'], hint: '사이트의 이름 아래 정보 줄에 이 순서대로 나옵니다.' },
+    ],
   },
   {
     key: 'contributions', label: '기여 서버', titleKey: 'server', dateKey: 'start',
@@ -136,9 +134,43 @@ const VIDEO_FIELDS = [
 
 const collByKey = (key) => COLLECTIONS.find((c) => c.key === key);
 
+const CONTACT_TYPES = {
+  discord: {
+    name: 'Discord', label: 'DISCORD', value: '아이디', valueRequired: true,
+    target: '사용자 ID', numeric: true, pattern: /^\d{17,20}$/, error: '숫자 17~20자리로 입력하세요.',
+    targetHint: '숫자 17~20자리입니다. Discord 설정의 고급에서 개발자 모드를 켜고, 내 프로필을 우클릭해 ID를 복사하세요. 비우면 링크 없이 아이디만 보입니다.',
+  },
+  email: {
+    name: '메일', label: 'CONTACT', value: '보이는 글', valueHint: '비우면 메일 주소를 그대로 보여 줍니다.',
+    target: '메일 주소', targetRequired: true, pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, error: '메일 주소 형식으로 입력하세요.',
+  },
+  link: {
+    name: '링크', label: '', value: '보이는 글', valueRequired: true,
+    target: '주소', targetRequired: true, pattern: /^https:\/\/\S+$/, error: 'https:// 로 시작해야 합니다.',
+  },
+};
+
+const contactType = (type) => (Object.hasOwn(CONTACT_TYPES, type) ? CONTACT_TYPES[type] : null);
+
+function normalizeContacts(p, arr) {
+  const list = arr(p.contacts).map((c) => {
+    if (c.type) return { ...c, type: c.type, label: c.label ?? '', value: c.value ?? '', target: c.target ?? null };
+    const url = typeof c.url === 'string' ? c.url : '';
+    if (/^mailto:/i.test(url)) {
+      const address = url.slice(7);
+      return { type: 'email', label: c.label || 'CONTACT', value: c.value === address ? '' : c.value || '', target: address };
+    }
+    return { type: 'link', label: c.label || '', value: c.value || '', target: url || null };
+  });
+  if (p.discord && !list.some((c) => c.type === 'discord')) {
+    list.unshift({ type: 'discord', label: 'DISCORD', value: p.discord || '', target: p.discordId || null });
+  }
+  return list;
+}
+
 function emptyData() {
   return {
-    profile: { name: '', intro: '', team: { name: '', logo: null, url: null }, discord: '', discordId: null, contacts: [], contributions: [] },
+    profile: { name: '', intro: '', team: { name: '', logo: null, url: null }, contacts: [], contributions: [] },
     plugins: [],
     models: [],
     sfx: [],
@@ -151,7 +183,11 @@ function normalize(raw) {
   const obj = (v) => (v && typeof v === 'object' && !Array.isArray(v) ? v : null);
   const arr = (v) => (Array.isArray(v) ? v.filter((x) => obj(x)) : []);
   const p = obj(raw.profile);
-  if (p) d.profile = { ...d.profile, ...p, team: { ...d.profile.team, ...obj(p.team) }, contacts: arr(p.contacts), contributions: arr(p.contributions) };
+  if (p) {
+    d.profile = { ...d.profile, ...p, team: { ...d.profile.team, ...obj(p.team) }, contacts: normalizeContacts(p, arr), contributions: arr(p.contributions) };
+    delete d.profile.discord;
+    delete d.profile.discordId;
+  }
   d.plugins = arr(raw.plugins).map((pl) => ({ ...pl, videos: arr(pl.videos) }));
   const m = obj(raw.models);
   d.models = m ? [...arr(m.models), ...arr(m.vfx)] : arr(raw.models);
@@ -297,6 +333,7 @@ async function loadRemote() {
   state.base = normalize(raw);
   state.data = clone(state.base);
   state.deletes.clear();
+  state.contactConfirm = null;
 
   const saved = storage.get(localStorage, draftKey());
   if (saved) {
@@ -319,7 +356,7 @@ async function loadRemote() {
 
 /* 변경 계산 */
 
-const profileOnly = (p) => ({ ...p, contacts: undefined, contributions: undefined });
+const profileOnly = (p) => ({ ...p, contributions: undefined });
 
 // 컬렉션별로 추가, 수정, 삭제, 순서 변경을 센다.
 function collectionChanges(coll) {
@@ -363,11 +400,22 @@ function validateFields(fields, item, errors, prefix = '') {
     if (f.required && empty) { errors[key] = '필수 항목입니다.'; continue; }
     if (empty) continue;
     if (f.key === 'id' && !ID_RE.test(v)) errors[key] = '영문 소문자, 숫자, - 만 쓸 수 있습니다.';
-    if (f.key === 'discordId' && !/^\d{17,20}$/.test(v)) errors[key] = '숫자 17~20자리로 입력하세요.';
     if (f.type === 'date' && !DATE_RE.test(v)) errors[key] = 'YYYY.MM.DD 또는 YYYY.MM 형식으로 입력하세요.';
-    if (f.type === 'url' && !/^https:\/\//i.test(v) && !(f.mailto && /^mailto:[^\s@]+@[^\s@]+$/i.test(v))) errors[key] = f.mailto ? 'https:// 또는 mailto: 로 시작해야 합니다.' : 'https:// 로 시작해야 합니다.';
+    if (f.type === 'url' && !/^https:\/\//i.test(v)) errors[key] = 'https:// 로 시작해야 합니다.';
     if (f.type === 'media' && state.treeComplete && !state.basePaths.has(v) && !state.pending.has(v)) errors[key] = '파일을 다시 선택하세요.';
     if (f.type === 'videos') v.forEach((sub, i) => validateFields(VIDEO_FIELDS, sub, errors, `videos.${i}.`));
+    if (f.type === 'contacts') v.forEach((c, i) => validateContact(c, errors, `${key}.${i}.`));
+  }
+}
+
+function validateContact(c, errors, prefix) {
+  const t = contactType(c.type);
+  if (!t) return;
+  if (t.valueRequired && !c.value) errors[`${prefix}value`] = '필수 항목입니다.';
+  if (!c.target) {
+    if (t.targetRequired) errors[`${prefix}target`] = '필수 항목입니다.';
+  } else if (!t.pattern.test(c.target)) {
+    errors[`${prefix}target`] = t.error;
   }
 }
 
@@ -491,7 +539,7 @@ function renderApp() {
     h('button', { type: 'button', class: 'btn primary', disabled: state.busy || !count, onclick: publish }, state.busy ? '게시 중…' : '게시'),
     h('button', { type: 'button', class: 'btn logout', disabled: state.busy, onclick: signOut }, '로그아웃'));
 
-  const body = state.view === 'preview' ? renderPreview() : h('div', { class: 'workbench', 'data-pane': state.pane },
+  const body = state.view === 'preview' ? renderPreview() : h('div', { class: 'workbench', 'data-pane': state.pane, 'data-single': collByKey(state.coll).single ? '' : null },
     h('nav', { class: 'pane pane-collections', 'aria-label': '컬렉션' }, renderCollections()),
     h('section', { class: 'pane pane-items', 'aria-label': '항목' }, renderItems()),
     h('section', { class: 'pane pane-editor', 'aria-label': '편집' }, renderEditor()));
@@ -526,6 +574,7 @@ function renderCollections() {
           state.coll = c.key;
           state.index = 0;
           state.confirm = null;
+          state.contactConfirm = null;
           state.pane = c.single ? 'editor' : 'items';
           renderApp();
         },
@@ -650,13 +699,18 @@ function renderEditor() {
     h('div', { class: 'editor-head' },
       h('button', { type: 'button', class: 'btn small pane-back', onclick: () => { state.pane = coll.single ? 'collections' : 'items'; renderApp(); } }, arrow('back'), '목록'),
       h('h2', null, title)),
-    h('div', { class: 'form' }, coll.fields.map((f) => renderField(f, item, errors, '', coll))));
+    coll.sections
+      ? coll.sections.map((sec) => h('section', { class: 'sec' },
+        h('div', { class: 'sec-head' }, h('h3', null, sec.title), sec.hint ? h('p', { class: 'muted' }, sec.hint) : null),
+        h('div', { class: sec.className ? `form ${sec.className}` : 'form' },
+          sec.keys.map((k) => renderField(coll.fields.find((f) => f.key === k), item, errors, '', coll)))))
+      : h('div', { class: 'form' }, coll.fields.map((f) => renderField(f, item, errors, '', coll))));
 }
 
 function fieldShell(f, key, errors, control) {
   const id = `f-${key.replace(/\./g, '-')}`;
   const err = errors[key];
-  return h('div', { class: `field${f.full ? ' full' : ''}${err ? ' invalid' : ''}` },
+  return h('div', { class: `field${f.full ? ' full' : ''}${err ? ' invalid' : ''}`, 'data-hint': f.hint || null },
     h('label', { for: id }, f.label, f.required ? h('span', { class: 'req' }, ' *') : null),
     control(id, err ? `${id}-err` : null),
     err ? h('span', { class: 'err', id: `${id}-err` }, err) : f.hint ? h('span', { class: 'muted' }, f.hint) : null);
@@ -679,7 +733,8 @@ function onEdit(item, key, value) {
       if (!slot) field.append(span);
       else if (slot !== span) slot.replaceWith(span);
     } else if (slot?.classList.contains('err')) {
-      slot.remove();
+      if (field.dataset.hint) slot.replaceWith(h('span', { class: 'muted' }, field.dataset.hint));
+      else slot.remove();
     }
   }
   const head = root.querySelector('.editor-head h2');
@@ -694,6 +749,8 @@ function renderField(f, item, errors, prefix, coll) {
     el = renderMedia(f, item, key, errors, coll);
   } else if (f.type === 'videos') {
     el = renderVideos(f, item, errors, coll);
+  } else if (f.type === 'contacts') {
+    el = renderContacts(item, errors);
   } else if (f.type === 'checkbox') {
     el = h('label', { class: `check${f.full ? ' full' : ''}` },
       h('input', { type: 'checkbox', checked: Boolean(value), onchange: (e) => onEdit(item, f.key, e.target.checked) }), f.label);
@@ -701,7 +758,7 @@ function renderField(f, item, errors, prefix, coll) {
     el = fieldShell(f, key, errors, (id, errId) => {
       const common = { id, 'aria-invalid': errId ? 'true' : null, 'aria-describedby': errId, 'aria-required': f.required ? 'true' : null };
       // 선택 항목은 비우면 null로 저장한다 (03-data-model: 끝 날짜 없음은 null).
-      const toValue = (v) => (v === '' && (f.type === 'date' || f.type === 'url' || ['credit', 'meta', 'shaderNote', 'discordId'].includes(f.key)) && !f.required ? null : v);
+      const toValue = (v) => (v === '' && (f.type === 'date' || f.type === 'url' || ['credit', 'meta', 'shaderNote'].includes(f.key)) && !f.required ? null : v);
       if (f.type === 'select') {
         return h('select', { ...common, onchange: (e) => onEdit(item, f.key, e.target.value) },
           f.options.map(([v, label]) => h('option', { value: v, selected: v === value }, label)));
@@ -944,6 +1001,86 @@ function renderMediaPreview(kind, path, label) {
     box.append(mv);
   }).catch(() => anims.replaceChildren(h('span', { class: 'err' }, '3D 뷰어를 불러오지 못했습니다.')));
   return h('div', null, box, anims);
+}
+
+function renderContacts(item, errors) {
+  const list = (item.contacts ||= []);
+  const rerender = (focus) => {
+    refresh();
+    root.querySelector('.pane-editor')?.replaceChildren(renderEditor());
+    for (const sel of [focus].flat().filter(Boolean)) {
+      const el = root.querySelector(`.pane-editor ${sel}`);
+      if (el && !el.disabled) return el.focus();
+    }
+  };
+  const at = (i, sel) => `.contact:nth-child(${i + 1}) ${sel}`;
+  const nameOf = (c, i) => c.label || contactType(c.type)?.name || `연락처 ${i + 1}`;
+  const move = (i, d) => {
+    [list[i], list[i + d]] = [list[i + d], list[i]];
+    state.contactConfirm = null;
+    rerender([at(i + d, `.item-moves .btn:nth-child(${d < 0 ? 1 : 2})`), at(i + d, `.item-moves .btn:nth-child(${d < 0 ? 2 : 1})`)]);
+  };
+
+  const blocks = list.map((c, i) => {
+    const t = contactType(c.type);
+    const name = nameOf(c, i);
+    const input = (key, label, opts = {}) => {
+      const fieldKey = `contacts.${i}.${key}`;
+      const el = fieldShell({ key, label, required: opts.required, hint: opts.hint }, fieldKey, errors, (id, errId) => h('input', {
+        id,
+        type: 'text',
+        value: c[key] ?? '',
+        inputmode: opts.numeric ? 'numeric' : null,
+        spellcheck: key === 'target' ? false : null,
+        'aria-invalid': errId ? 'true' : null,
+        'aria-describedby': errId,
+        'aria-required': opts.required ? 'true' : null,
+        oninput: (e) => onEdit(c, key, key === 'target' && e.target.value === '' ? null : e.target.value),
+      }));
+      el.dataset.key = fieldKey;
+      return el;
+    };
+    const confirm = state.contactConfirm === i
+      ? h('div', { class: 'confirm', role: 'group', 'aria-label': '연락처 빼기 확인' },
+        h('span', null, `"${name}" 연락처를 빼시겠습니까?`),
+        h('span', { class: 'btns' },
+          h('button', { type: 'button', class: 'btn small primary', onclick: () => { list.splice(i, 1); state.contactConfirm = null; rerender(list.length ? at(Math.min(i, list.length - 1), 'select') : '.contacts > .btn'); } }, '빼기'),
+          h('button', { type: 'button', class: 'btn small', onclick: () => { state.contactConfirm = null; rerender(at(i, '.item-moves .btn:nth-child(3)')); } }, '취소')))
+      : null;
+    return h('li', { class: 'contact' },
+      h('div', { class: 'contact-head' },
+        h('select', {
+          'aria-label': `${name} 종류`,
+          onchange: (e) => {
+            const next = CONTACT_TYPES[e.target.value];
+            if (!c.label || c.label === t?.label) c.label = next.label;
+            c.type = e.target.value;
+            rerender(at(i, 'select'));
+          },
+        }, t ? null : h('option', { value: c.type, selected: true }, c.type),
+        Object.entries(CONTACT_TYPES).map(([k, type]) => h('option', { value: k, selected: k === c.type }, type.name))),
+        h('span', { class: 'item-moves' },
+          h('button', { type: 'button', class: 'btn small', 'aria-label': `${name} 위로`, disabled: i === 0, onclick: () => move(i, -1) }, arrow('up')),
+          h('button', { type: 'button', class: 'btn small', 'aria-label': `${name} 아래로`, disabled: i === list.length - 1, onclick: () => move(i, 1) }, arrow('down')),
+          h('button', { type: 'button', class: 'btn small', 'aria-label': `${name} 빼기`, onclick: () => { state.contactConfirm = i; rerender(at(i, '.confirm .btn:last-child')); } }, '빼기'))),
+      confirm,
+      t ? h('div', { class: 'form' },
+        input('label', '라벨'),
+        input('value', t.value, { required: t.valueRequired, hint: t.valueHint }),
+        input('target', t.target, { required: t.targetRequired, hint: t.targetHint, numeric: t.numeric })) : null);
+  });
+
+  return h('div', { class: 'field full contacts' },
+    list.length ? h('ul', { class: 'contact-list', role: 'list' }, blocks) : h('p', { class: 'muted' }, '연락처가 없습니다.'),
+    h('button', {
+      type: 'button',
+      class: 'btn small',
+      onclick: () => {
+        list.push({ type: 'link', label: '', value: '', target: null });
+        state.contactConfirm = null;
+        rerender(at(list.length - 1, 'select'));
+      },
+    }, '연락처 추가'));
 }
 
 function renderVideos(f, item, errors, coll) {

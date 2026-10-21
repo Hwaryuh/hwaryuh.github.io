@@ -56,7 +56,22 @@ const ICON = {
 // Discord 사용자 ID (숫자 17~20자리). JSON에서 숫자로 두면 자릿수가 깨지므로 문자열로 둔다.
 const DISCORD_ID_RE = /^\d{17,20}$/;
 const safeUrl = (url) => (typeof url === 'string' && /^https:\/\//i.test(url) ? url : null);
-const safeContactUrl = (url) => (typeof url === 'string' && /^mailto:/i.test(url) ? url : safeUrl(url));
+
+const CONTACT_HREF = {
+  discord: (c) => (DISCORD_ID_RE.test(c.target || '') ? `https://discord.com/users/${c.target}` : null),
+  email: (c) => (/^[^\s@]+@[^\s@]+$/.test(c.target || '') ? `mailto:${c.target}` : null),
+  link: (c) => safeUrl(c.target),
+};
+
+function profileContacts(p) {
+  const list = arr(p.contacts).map((c) => {
+    if (c.type) return c;
+    const url = typeof c.url === 'string' ? c.url : '';
+    return /^mailto:/i.test(url) ? { type: 'email', label: c.label, value: c.value, target: url.slice(7) } : { type: 'link', label: c.label, value: c.value, target: url };
+  });
+  if (p.discord && !list.some((c) => c.type === 'discord')) list.unshift({ type: 'discord', label: 'DISCORD', value: p.discord, target: p.discordId });
+  return list;
+}
 
 const STATUS = { wip: '진행 중', stopped: '개발 중단' };
 
@@ -271,7 +286,14 @@ function renderProfile(p) {
       h('span', { class: 'contrib-work' }, c.work));
   });
 
-  const contacts = arr(p.contacts).filter((c) => c.label && c.value).map((c) => contactLine(c.label, c.value, safeContactUrl(c.url)));
+  const meta = profileContacts(p).map((c) => {
+    const text = c.value || (c.type === 'email' ? c.target : '');
+    if (!text) return null;
+    const url = Object.hasOwn(CONTACT_HREF, c.type) ? CONTACT_HREF[c.type](c) : null;
+    return h('div', { class: 'meta-item' },
+      h('span', { class: 'meta-label' }, c.label || ''),
+      url ? h('a', { href: url, ...(c.type === 'email' ? {} : { target: '_blank', rel: 'noopener' }) }, text) : h('span', null, text));
+  }).filter(Boolean);
 
   return h('section', { class: 'profile wrap', 'aria-label': 'Profile' },
     h('div', { class: 'identity' },
@@ -285,16 +307,8 @@ function renderProfile(p) {
         h('span', { class: 'base' }, p.team.name),
         h('span', { class: 'px', 'aria-hidden': 'true' }, p.team.name))) : null),
     h('div', null,
-      p.discord || contacts.length ? h('div', { class: 'contacts' },
-        p.discord ? contactLine('DISCORD', p.discord, DISCORD_ID_RE.test(p.discordId || '') ? `https://discord.com/users/${p.discordId}` : null) : null,
-        contacts) : null,
+      meta.length ? h('div', { class: 'profile-meta' }, meta) : null,
       contribs.length ? h('ul', { class: 'contribs', role: 'list' }, contribs) : null));
-}
-
-function contactLine(label, value, url) {
-  const external = url && !/^mailto:/i.test(url);
-  return h('p', { class: 'contact' }, h('span', { class: 'small' }, label), ' ',
-    url ? h('a', { href: url, ...(external ? { target: '_blank', rel: 'noopener' } : {}) }, value) : value);
 }
 
 /* Plugins 목록 */

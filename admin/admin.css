@@ -125,6 +125,8 @@ body.admin { min-height: 100vh; }
   overflow-y: auto;
 }
 .pane:last-child { border-right: none; }
+.workbench[data-single] { grid-template-columns: 220px minmax(0, 1fr); }
+.workbench[data-single] .pane-items { display: none; }
 .pane-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; height: 56px; padding: 0 20px; border-bottom: 1px solid var(--line); }
 .pane-head h2 { font-size: 13px; font-weight: 500; color: var(--muted); }
 
@@ -215,6 +217,28 @@ body.admin { min-height: 100vh; }
 .subitem .full { grid-column: 1 / -1; }
 .subitem-head { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 13px; color: var(--muted); }
 
+.sec { display: flex; flex-direction: column; gap: 16px; padding: 28px 0; border-top: 1px solid var(--line); }
+.editor-head + .sec { padding-top: 0; border-top: none; }
+.sec-head { display: flex; flex-direction: column; gap: 4px; }
+.sec-head h3 { font-size: 17px; font-weight: 700; }
+
+.form.team-form { grid-template-columns: 120px minmax(0, 1fr); }
+.form.team-form .field[data-key="team.logo"] { grid-row: span 3; }
+.form.team-form { grid-template-rows: auto auto 1fr; }
+.form.team-form .media-preview { display: grid; place-items: center; width: 96px; height: 96px; }
+.form.team-form .media-preview img { max-width: 64px; max-height: 64px; }
+.form.team-form .media-empty.square { width: 96px; }
+
+.contact-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.contact { display: flex; flex-direction: column; gap: 14px; padding: 12px 16px 16px; border: 1px solid var(--line); border-radius: 4px; }
+.contact-head { display: flex; align-items: center; gap: 8px; }
+.admin .contact-head select { width: auto; min-width: 140px; }
+.contact-head .item-moves { margin-left: auto; }
+.contact .form { gap: 14px 16px; }
+.contact .confirm { padding: 12px 16px; border-radius: 4px; }
+.contacts { gap: 12px; }
+.contacts > .btn { align-self: flex-start; }
+
 .editor-foot { display: flex; justify-content: flex-end; gap: 8px; margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--line); }
 
 /* 미리보기 */
@@ -231,7 +255,7 @@ body.admin { min-height: 100vh; }
   .topbar { padding: 0 16px; gap: 8px; }
 
   .topbar .repo, .topbar .logout { display: none; }
-  .workbench { grid-template-columns: 1fr; }
+  .workbench, .workbench[data-single] { grid-template-columns: 1fr; }
   .pane { display: none; border-right: none; }
   .workbench[data-pane="collections"] .pane-collections,
   .workbench[data-pane="items"] .pane-items,

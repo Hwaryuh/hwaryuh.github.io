@@ -6,14 +6,18 @@
     "logo": "media/team/logo.svg",
     "url": "https://semicolonstudio.kro.kr/"
   },
-  "discord": "@junkfoodkiller",
-  "discordId": "909085830902059078",
   "contacts": [
     {
-      "id": "contact",
+      "type": "discord",
+      "label": "DISCORD",
+      "value": "@junkfoodkiller",
+      "target": "909085830902059078"
+    },
+    {
+      "type": "email",
       "label": "CONTACT",
-      "value": "hwaryuh@gmail.com",
-      "url": "mailto:hwaryuh@gmail.com"
+      "value": "",
+      "target": "hwaryuh@gmail.com"
     }
   ],
   "contributions": [
