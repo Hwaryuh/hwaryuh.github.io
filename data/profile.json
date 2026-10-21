@@ -18,6 +18,12 @@
       "label": "CONTACT",
       "value": "",
       "target": "hwaryuh@gmail.com"
+    },
+    {
+      "type": "link",
+      "label": "LINK",
+      "value": "GitHub",
+      "target": "https://github.com/Hwaryuh"
     }
   ],
   "contributions": [
