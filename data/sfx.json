@@ -1,19 +1,19 @@
 [
   {
-    "id": "primary-colony-opening",
-    "title": "컷신 효과음",
-    "description": "Primary Colony 오프닝 컷신에 등장하는 우주선 효과음입니다.",
-    "credit": "블럭 컨버팅 @pokmagoon04",
-    "video": "media/sfx/primary-colony-opening/video.mp4",
-    "poster": "media/sfx/primary-colony-opening/video-poster.webp"
-  },
-  {
     "id": "object-sfx",
     "title": "오브젝트 효과음",
     "description": "개인 프로젝트 작업물입니다.",
     "credit": null,
     "video": "media/sfx/object-sfx/video.mp4",
     "poster": "media/sfx/object-sfx/poster.jpg"
+  },
+  {
+    "id": "primary-colony-opening",
+    "title": "컷신 효과음",
+    "description": "Primary Colony 오프닝 컷신에 등장하는 우주선 효과음입니다.",
+    "credit": "블럭 컨버팅 @y.a.n.\n애니메이션 @pokmagoon04\n앰비언트 @repl0nline",
+    "video": "media/sfx/primary-colony-opening/video.mp4",
+    "poster": "media/sfx/primary-colony-opening/video-poster.webp"
   },
   {
     "id": "boss-sfx",
