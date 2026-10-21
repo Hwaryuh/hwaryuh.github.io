@@ -861,6 +861,7 @@ function renderMedia(f, item, key, errors, coll) {
         onclick: () => { setPath(item, f.key, null); refresh(); root.querySelector('.pane-editor')?.replaceChildren(renderEditor()); },
       }, '비우기') : null,
       canThumb ? h('button', { type: 'button', class: 'btn small', onclick: () => makeThumb(item, coll) }, '썸네일 다시 만들기') : null,
+      canThumb ? h('button', { type: 'button', class: 'btn small', onclick: () => makeThumb(item, coll, true) }, '지금 각도로 썸네일 만들기') : null,
       videoPath ? h('button', { type: 'button', class: 'btn small', onclick: () => makeVideoThumb(item, videoPath, true) }, '지금 장면으로 썸네일 만들기') : null,
       status)));
 }
@@ -869,14 +870,14 @@ let modelViewerReady;
 
 // 사이트 뷰어와 같은 처음 각도로 모델을 한 장 찍는다 (512×512, 투명 배경 webp).
 // model-viewer는 화면 안에 있는 요소만 그리므로 화면 위에 투명하게 띄워서 찍는다.
-async function captureThumb(src) {
+async function captureThumb(src, orbit = '225deg 75deg auto') {
   modelViewerReady ||= import('../vendor/model-viewer.min.js');
   await modelViewerReady;
   // 성능에 따라 해상도를 절반까지 낮추는 기능을 끈다 (끄지 않으면 256×256으로 찍힌다).
   customElements.get('model-viewer').minimumRenderScale = 1;
   const mv = h('model-viewer', {
     src: mediaUrl(src),
-    'camera-orbit': '225deg 75deg auto',
+    'camera-orbit': orbit,
     'shadow-intensity': '0',
     'interaction-prompt': 'none',
     style: 'position:fixed;left:0;top:0;width:512px;height:512px;opacity:0;pointer-events:none;z-index:-1',
@@ -911,12 +912,15 @@ function setAutoPoster(item, path, blob) {
   root.querySelector('.pane-editor')?.replaceChildren(renderEditor());
 }
 
-async function makeThumb(item, coll) {
+async function makeThumb(item, coll, fromPreview) {
   if (!item.src) return;
   if (!ID_RE.test(item.id || '')) { setNotice('썸네일을 만들려면 id를 먼저 올바르게 입력하세요.', true); return; }
+  const preview = fromPreview ? root.querySelector(`model-viewer[data-path="${CSS.escape(item.src)}"]`) : null;
+  if (fromPreview && !preview?.loaded) { setNotice('모델 미리보기가 뜬 뒤에 다시 누르세요.', true); return; }
+  const orbit = preview?.getCameraOrbit();
   setNotice('모델로 썸네일을 만드는 중…');
   try {
-    setAutoPoster(item, `media/${coll.folder}/${item.id}/poster.webp`, await captureThumb(item.src));
+    setAutoPoster(item, `media/${coll.folder}/${item.id}/poster.webp`, await captureThumb(item.src, orbit && `${orbit.theta}rad ${orbit.phi}rad auto`));
   } catch (err) {
     setNotice(`썸네일을 만들지 못했습니다: ${err.message}`, true);
   }
@@ -985,7 +989,7 @@ function renderMediaPreview(kind, path, label) {
   const anims = h('div', { class: 'media-anims', 'aria-live': 'polite' });
   modelViewerReady ||= import('../vendor/model-viewer.min.js');
   modelViewerReady.then(() => {
-    const mv = h('model-viewer', { src: url, alt: label, 'camera-controls': true, 'camera-orbit': '225deg 75deg auto', 'interaction-prompt': 'none', autoplay: true });
+    const mv = h('model-viewer', { src: url, alt: label, 'data-path': path, 'camera-controls': true, 'camera-orbit': '225deg 75deg auto', 'interaction-prompt': 'none', autoplay: true });
     mv.addEventListener('load', () => {
       const names = mv.availableAnimations || [];
       const pick = (name) => {
