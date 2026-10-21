@@ -84,6 +84,12 @@ const COLLECTIONS = [
     ],
   },
   {
+    key: 'contacts', label: '연락처', titleKey: 'label',
+    list: (d) => d.profile.contacts,
+    fields: [F.id, { key: 'label', label: '이름', type: 'text', required: true, hint: '예: CONTACT, GITHUB' }, { key: 'value', label: '보이는 글', type: 'text', required: true }, { key: 'url', label: '링크', type: 'url', mailto: true, full: true, hint: 'https:// 주소나 mailto:메일 주소를 입력하세요.' }],
+    blank: () => ({ id: '', label: '', value: '', url: null }),
+  },
+  {
     key: 'contributions', label: '기여 서버', titleKey: 'server', dateKey: 'start',
     list: (d) => d.profile.contributions,
     fields: [F.id, { key: 'server', label: '서버 이름', type: 'text', required: true }, { key: 'url', label: '링크', type: 'url', full: true }, F.start, F.end, { key: 'work', label: '작업 내용', type: 'text', full: true }],
@@ -132,7 +138,7 @@ const collByKey = (key) => COLLECTIONS.find((c) => c.key === key);
 
 function emptyData() {
   return {
-    profile: { name: '', intro: '', team: { name: '', logo: null, url: null }, discord: '', discordId: null, contributions: [] },
+    profile: { name: '', intro: '', team: { name: '', logo: null, url: null }, discord: '', discordId: null, contacts: [], contributions: [] },
     plugins: [],
     models: [],
     sfx: [],
@@ -145,7 +151,7 @@ function normalize(raw) {
   const obj = (v) => (v && typeof v === 'object' && !Array.isArray(v) ? v : null);
   const arr = (v) => (Array.isArray(v) ? v.filter((x) => obj(x)) : []);
   const p = obj(raw.profile);
-  if (p) d.profile = { ...d.profile, ...p, team: { ...d.profile.team, ...obj(p.team) }, contributions: arr(p.contributions) };
+  if (p) d.profile = { ...d.profile, ...p, team: { ...d.profile.team, ...obj(p.team) }, contacts: arr(p.contacts), contributions: arr(p.contributions) };
   d.plugins = arr(raw.plugins).map((pl) => ({ ...pl, videos: arr(pl.videos) }));
   const m = obj(raw.models);
   d.models = m ? [...arr(m.models), ...arr(m.vfx)] : arr(raw.models);
@@ -313,11 +319,12 @@ async function loadRemote() {
 
 /* 변경 계산 */
 
+const profileOnly = (p) => ({ ...p, contacts: undefined, contributions: undefined });
+
 // 컬렉션별로 추가, 수정, 삭제, 순서 변경을 센다.
 function collectionChanges(coll) {
   if (coll.single) {
-    const strip = (p) => ({ ...p, contributions: undefined });
-    const changed = !same(strip(state.data.profile), strip(state.base.profile)) || refsPending(strip(state.data.profile));
+    const changed = !same(profileOnly(state.data.profile), profileOnly(state.base.profile)) || refsPending(profileOnly(state.data.profile));
     return { count: changed ? 1 : 0, items: [changed] };
   }
   const draft = coll.list(state.data);
@@ -358,7 +365,7 @@ function validateFields(fields, item, errors, prefix = '') {
     if (f.key === 'id' && !ID_RE.test(v)) errors[key] = '영문 소문자, 숫자, - 만 쓸 수 있습니다.';
     if (f.key === 'discordId' && !/^\d{17,20}$/.test(v)) errors[key] = '숫자 17~20자리로 입력하세요.';
     if (f.type === 'date' && !DATE_RE.test(v)) errors[key] = 'YYYY.MM.DD 또는 YYYY.MM 형식으로 입력하세요.';
-    if (f.type === 'url' && !/^https:\/\//i.test(v)) errors[key] = 'https:// 로 시작해야 합니다.';
+    if (f.type === 'url' && !/^https:\/\//i.test(v) && !(f.mailto && /^mailto:[^\s@]+@[^\s@]+$/i.test(v))) errors[key] = f.mailto ? 'https:// 또는 mailto: 로 시작해야 합니다.' : 'https:// 로 시작해야 합니다.';
     if (f.type === 'media' && state.treeComplete && !state.basePaths.has(v) && !state.pending.has(v)) errors[key] = '파일을 다시 선택하세요.';
     if (f.type === 'videos') v.forEach((sub, i) => validateFields(VIDEO_FIELDS, sub, errors, `videos.${i}.`));
   }
@@ -595,7 +602,7 @@ function exclusiveMedia(item) {
   const others = new Set();
   const all = clone(state.data);
   for (const c of COLLECTIONS) {
-    if (c.single) { mediaRefs({ ...all.profile, contributions: undefined }, others); continue; }
+    if (c.single) { mediaRefs(profileOnly(all.profile), others); continue; }
     for (const it of c.list(all)) if (!same(it, item)) mediaRefs(it, others);
   }
   return [...mediaRefs(item)].filter((p) => state.basePaths.has(p) && !others.has(p));
@@ -706,7 +713,7 @@ function renderField(f, item, errors, prefix, coll) {
         ...common,
         type: f.type === 'url' ? 'url' : 'text',
         value: value ?? '',
-        placeholder: f.type === 'date' ? 'YYYY.MM.DD' : f.type === 'url' ? 'https://' : null,
+        placeholder: f.type === 'date' ? 'YYYY.MM.DD' : f.type === 'url' ? (f.mailto ? 'https:// 또는 mailto:' : 'https://') : null,
         spellcheck: f.key === 'id' || f.type === 'url' ? false : null,
         oninput: (e) => onEdit(item, f.key, toValue(e.target.value)),
       });

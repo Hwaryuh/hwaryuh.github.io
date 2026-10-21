@@ -205,8 +205,8 @@ a.team-name { cursor: pointer; }
 }
 @keyframes team-shine { to { background-position: -200% center; } }
 
-.discord { margin-bottom: 12px; font-size: 14px; text-align: right; }
-.discord a { text-decoration: none; }
+.contacts { margin-bottom: 12px; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; font-size: 14px; }
+.contacts a { text-decoration: none; }
 
 .contribs { margin: 0; padding: 0; list-style: none; border-top: 1.5px solid var(--fg); }
 
@@ -643,7 +643,7 @@ a.team-name { cursor: pointer; }
   .team-logo { width: 44px; height: 44px; border-radius: 10px; }
   .team-name { font-size: 20px; }
   .team-name .px { letter-spacing: 0; } /* Pretendard 20px 너비(155px)에 가깝게: 글자 158px + 더한 점 2px */
-  .discord { margin-bottom: 10px; font-size: 13px; text-align: left; }
+  .contacts { margin-bottom: 10px; align-items: flex-start; font-size: 13px; }
   .contrib { display: flex; flex-direction: column; gap: 4px; padding: 14px 0; }
   .contrib-server { order: 1; font-size: 16px; }
   .contrib-work { order: 2; font-size: 14px; }

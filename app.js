@@ -56,6 +56,7 @@ const ICON = {
 // Discord 사용자 ID (숫자 17~20자리). JSON에서 숫자로 두면 자릿수가 깨지므로 문자열로 둔다.
 const DISCORD_ID_RE = /^\d{17,20}$/;
 const safeUrl = (url) => (typeof url === 'string' && /^https:\/\//i.test(url) ? url : null);
+const safeContactUrl = (url) => (typeof url === 'string' && /^mailto:/i.test(url) ? url : safeUrl(url));
 
 const STATUS = { wip: '진행 중', stopped: '개발 중단' };
 
@@ -270,6 +271,8 @@ function renderProfile(p) {
       h('span', { class: 'contrib-work' }, c.work));
   });
 
+  const contacts = arr(p.contacts).filter((c) => c.label && c.value).map((c) => contactLine(c.label, c.value, safeContactUrl(c.url)));
+
   return h('section', { class: 'profile wrap', 'aria-label': 'Profile' },
     h('div', { class: 'identity' },
       h('div', { class: 'identity-main' },
@@ -282,9 +285,16 @@ function renderProfile(p) {
         h('span', { class: 'base' }, p.team.name),
         h('span', { class: 'px', 'aria-hidden': 'true' }, p.team.name))) : null),
     h('div', null,
-      p.discord ? h('p', { class: 'discord' }, h('span', { class: 'small' }, 'DISCORD'), ' ',
-        DISCORD_ID_RE.test(p.discordId || '') ? h('a', { href: `https://discord.com/users/${p.discordId}`, target: '_blank', rel: 'noopener' }, p.discord) : p.discord) : null,
+      p.discord || contacts.length ? h('div', { class: 'contacts' },
+        p.discord ? contactLine('DISCORD', p.discord, DISCORD_ID_RE.test(p.discordId || '') ? `https://discord.com/users/${p.discordId}` : null) : null,
+        contacts) : null,
       contribs.length ? h('ul', { class: 'contribs', role: 'list' }, contribs) : null));
+}
+
+function contactLine(label, value, url) {
+  const external = url && !/^mailto:/i.test(url);
+  return h('p', { class: 'contact' }, h('span', { class: 'small' }, label), ' ',
+    url ? h('a', { href: url, ...(external ? { target: '_blank', rel: 'noopener' } : {}) }, value) : value);
 }
 
 /* Plugins 목록 */

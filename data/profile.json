@@ -8,6 +8,14 @@
   },
   "discord": "@junkfoodkiller",
   "discordId": "909085830902059078",
+  "contacts": [
+    {
+      "id": "contact",
+      "label": "CONTACT",
+      "value": "hwaryuh@gmail.com",
+      "url": "mailto:hwaryuh@gmail.com"
+    }
+  ],
   "contributions": [
     {
       "id": "primary-colony",
