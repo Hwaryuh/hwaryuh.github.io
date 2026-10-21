@@ -833,11 +833,8 @@ function renderMedia(f, item, key, errors, coll) {
       const prev = state.pending.get(path);
       if (prev) URL.revokeObjectURL(prev.url);
       state.pending.set(path, { file, url: URL.createObjectURL(file) });
-      if (value && value !== path && state.pending.has(value) && !mediaRefs(state.data).has(value)) {
-        URL.revokeObjectURL(state.pending.get(value).url);
-        state.pending.delete(value);
-      }
       setPath(item, f.key, path);
+      dropReplaced(value);
       refresh();
       root.querySelector('.pane-editor')?.replaceChildren(renderEditor());
       if (file.size > WARN_BYTES) setNotice(`${file.name}은 ${(file.size / 1048576).toFixed(1)}MB입니다. 방문자가 받기에 큽니다.`);
@@ -898,6 +895,15 @@ async function captureThumb(src, orbit = '225deg 75deg auto') {
   }
 }
 
+function dropReplaced(prev) {
+  if (!prev || mediaRefs(state.data).has(prev)) return;
+  if (state.pending.has(prev)) {
+    URL.revokeObjectURL(state.pending.get(prev).url);
+    state.pending.delete(prev);
+  }
+  if (state.basePaths.has(prev)) state.deletes.add(prev);
+}
+
 function setAutoPoster(item, path, blob) {
   if (!blob?.size) throw new Error('빈 이미지가 나왔습니다.');
   const file = new File([blob], path.split('/').pop(), { type: blob.type });
@@ -906,10 +912,7 @@ function setAutoPoster(item, path, blob) {
   if (old) URL.revokeObjectURL(old.url);
   state.pending.set(path, { file, url: URL.createObjectURL(file), auto: true });
   item.poster = path;
-  if (prev && prev !== path && state.pending.has(prev) && !mediaRefs(state.data).has(prev)) {
-    URL.revokeObjectURL(state.pending.get(prev).url);
-    state.pending.delete(prev);
-  }
+  dropReplaced(prev);
   clearNotice();
   refresh();
   root.querySelector('.pane-editor')?.replaceChildren(renderEditor());
