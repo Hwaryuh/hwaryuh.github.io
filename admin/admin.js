@@ -399,7 +399,7 @@ function renderNotice() {
 function renderLogin(message) {
   const saved = (() => { try { return JSON.parse(storage.get(localStorage, REPO_KEY)) || {}; } catch { return {}; } })();
   const repoIn = h('input', { type: 'text', id: 'repo', value: saved.repo || '', placeholder: 'owner/repository', autocomplete: 'off', spellcheck: false });
-  const branchIn = h('input', { type: 'text', id: 'branch', value: saved.branch || 'main', autocomplete: 'off', spellcheck: false });
+  const branchIn = h('input', { type: 'text', id: 'branch', value: saved.branch || 'master', autocomplete: 'off', spellcheck: false });
   const tokenIn = h('input', { type: 'password', id: 'token', autocomplete: 'off', spellcheck: false });
   const remember = h('input', { type: 'checkbox', id: 'remember' });
   const status = h('p', { class: 'err', role: 'alert' }, message || '');
