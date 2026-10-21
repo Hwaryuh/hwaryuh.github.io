@@ -65,6 +65,7 @@ const MEDIA = {
 
 const F = {
   id: { key: 'id', label: 'id', type: 'text', required: true, hint: '영문 소문자, 숫자, - 만' },
+  credit: { key: 'credit', label: '크레딧', type: 'textarea', full: true, hint: '한 줄에 크레딧 하나씩 입력하세요.' },
   start: { key: 'start', label: '시작', type: 'date', required: true },
   end: { key: 'end', label: '끝', type: 'date' },
 };
@@ -109,14 +110,14 @@ const COLLECTIONS = [
     key: 'models', label: '3D 모델', titleKey: 'name', folder: 'models',
     list: (d) => d.models,
     thumb: (it) => it.poster,
-    fields: [F.id, { key: 'name', label: '이름', type: 'text', required: true }, { key: 'src', label: '모델 (.glb)', type: 'media', kind: 'glb', file: 'model', required: true, full: true }, { key: 'poster', label: '썸네일', type: 'media', kind: 'image', file: 'poster', full: true }, { key: 'meta', label: '보조 정보', type: 'text', full: true }, { key: 'credit', label: '크레딧', type: 'text', full: true }],
+    fields: [F.id, { key: 'name', label: '이름', type: 'text', required: true }, { key: 'src', label: '모델 (.glb)', type: 'media', kind: 'glb', file: 'model', required: true, full: true }, { key: 'poster', label: '썸네일', type: 'media', kind: 'image', file: 'poster', full: true }, { key: 'meta', label: '보조 정보', type: 'text', full: true }, F.credit],
     blank: () => ({ id: '', name: '', src: null, poster: null, meta: null, credit: null }),
   },
   {
     key: 'sfx', label: 'SFX', titleKey: 'title', folder: 'sfx',
     list: (d) => d.sfx,
     thumb: (it) => it.poster,
-    fields: [F.id, { key: 'title', label: '제목', type: 'text', required: true }, { key: 'credit', label: '크레딧', type: 'text' }, { key: 'description', label: '설명', type: 'textarea', full: true }, { key: 'video', label: '영상', type: 'media', kind: 'video', file: 'video', required: true, full: true }, { key: 'poster', label: '썸네일', type: 'media', kind: 'image', file: 'poster', full: true }],
+    fields: [F.id, { key: 'title', label: '제목', type: 'text', required: true }, F.credit, { key: 'description', label: '설명', type: 'textarea', full: true }, { key: 'video', label: '영상', type: 'media', kind: 'video', file: 'video', required: true, full: true }, { key: 'poster', label: '썸네일', type: 'media', kind: 'image', file: 'poster', full: true }],
     blank: () => ({ id: '', title: '', description: '', credit: null, video: null, poster: null }),
   },
 ];
