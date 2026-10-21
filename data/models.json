@@ -6,5 +6,13 @@
     "poster": "media/models/dudn/poster.webp",
     "meta": null,
     "credit": "애니메이션 @y.a.n."
+  },
+  {
+    "id": "health-pack",
+    "name": "힐팩(오버워치)",
+    "src": "media/models/health-pack/model.glb",
+    "poster": "media/models/health-pack/poster.webp",
+    "meta": null,
+    "credit": null
   }
 ]
