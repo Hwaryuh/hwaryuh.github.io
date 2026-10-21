@@ -1,6 +1,8 @@
 // data/*.json을 읽어 페이지를 그린다.
 // 데이터 속 텍스트는 모두 텍스트 노드로 넣는다. innerHTML은 쓰지 않는다.
 
+import { shadeLikeBlockbench } from './shade.js';
+
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
 // 요소를 만든다. 문자열 자식은 텍스트 노드가 된다.
@@ -512,6 +514,7 @@ function buildPanel(item) {
         autoplay: true,
       });
       mv.addEventListener('load', () => {
+        shadeLikeBlockbench(mv);
         const names = mv.availableAnimations || [];
         if (!names.length) return;
         const pick = (name) => {

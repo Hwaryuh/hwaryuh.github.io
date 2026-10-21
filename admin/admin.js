@@ -1,6 +1,8 @@
 // 관리자 페이지. 데이터를 편집해 초안으로 모은 뒤 GitHub Git Data API로 한 커밋에 게시한다.
 // 데이터 속 텍스트는 모두 텍스트 노드로 넣는다. innerHTML은 쓰지 않는다 (토큰이 브라우저에 있으므로 XSS가 곧 토큰 유출이다).
 
+import { shadeLikeBlockbench } from '../shade.js';
+
 const API = 'https://api.github.com';
 const TOKEN_KEY = 'murinn-admin-token';
 const REPO_KEY = 'murinn-admin-repo';
@@ -888,6 +890,7 @@ async function captureThumb(src, orbit = '225deg 75deg auto') {
       mv.addEventListener('error', () => reject(new Error('모델을 불러오지 못했습니다.')), { once: true });
       document.body.append(mv);
     });
+    shadeLikeBlockbench(mv);
     await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
     return await mv.toBlob({ mimeType: 'image/webp', qualityArgument: 0.92, idealAspect: false });
   } finally {
@@ -991,6 +994,7 @@ function renderMediaPreview(kind, path, label) {
   modelViewerReady.then(() => {
     const mv = h('model-viewer', { src: url, alt: label, 'data-path': path, 'camera-controls': true, 'camera-orbit': '225deg 75deg auto', 'interaction-prompt': 'none', autoplay: true });
     mv.addEventListener('load', () => {
+      shadeLikeBlockbench(mv);
       const names = mv.availableAnimations || [];
       const pick = (name) => {
         mv.animationName = name;
