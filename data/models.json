@@ -3,7 +3,7 @@
     "id": "dudn",
     "name": "여우",
     "src": "media/models/dudn/model.glb",
-    "poster": null,
+    "poster": "media/models/dudn/poster.webp",
     "meta": null,
     "credit": "애니메이션 @y.a.n."
   }
