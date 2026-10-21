@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "id": "health-bar",
+    "title": "체력바 시스템",
+    "subtitle": "",
+    "start": "2025.06.18",
+    "end": "2025.06.20",
+    "status": "done",
+    "env": "Paper 1.21.4 ~ 최신",
+    "summary": "사용자가 원하는 모양으로 표시할 수 있는 체력바 시스템입니다.",
+    "description": "+ Model Engine 호환",
+    "usesShader": true,
+    "shaderNote": null,
+    "videos": [
+      {
+        "src": "media/plugins/health-bar/healthbar.mp4",
+        "poster": "media/plugins/health-bar/healthbar-poster.webp",
+        "caption": ""
+      },
+      {
+        "src": "media/plugins/health-bar/healthbar_attack.mp4",
+        "poster": "media/plugins/health-bar/healthbar_attack-poster.webp",
+        "caption": ""
+      }
+    ]
+  }
+]
