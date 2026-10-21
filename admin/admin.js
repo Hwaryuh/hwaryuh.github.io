@@ -776,8 +776,10 @@ function renderMedia(f, item, key, errors, coll) {
       if (file.size > WARN_BYTES) setNotice(`${file.name}은 ${(file.size / 1048576).toFixed(1)}MB입니다. 방문자가 받기에 큽니다.`);
       // 직접 넣은 썸네일이 없으면 새 모델로 썸네일을 만든다.
       if (f.kind === 'glb' && owner && (!owner.poster || state.pending.get(owner.poster)?.auto)) makeThumb(owner, coll);
+      if (f.kind === 'video' && (!item.poster || state.pending.get(item.poster)?.auto)) makeVideoThumb(item, path);
     },
   });
+  const videoPath = f.key === 'poster' ? getPath(item, VIDEO_FIELDS.includes(f) ? 'src' : 'video') : null;
   const canThumb = f.key === 'poster' && coll.fields.some((x) => x.kind === 'glb') && item.src;
 
   // 빈 칸은 사이트에서 이 파일이 놓일 자리의 비율로 그린다 (로고는 정사각, 나머지는 444×250).
@@ -794,6 +796,7 @@ function renderMedia(f, item, key, errors, coll) {
         onclick: () => { setPath(item, f.key, null); refresh(); root.querySelector('.pane-editor')?.replaceChildren(renderEditor()); },
       }, '비우기') : null,
       canThumb ? h('button', { type: 'button', class: 'btn small', onclick: () => makeThumb(item, coll) }, '썸네일 다시 만들기') : null,
+      videoPath ? h('button', { type: 'button', class: 'btn small', onclick: () => makeVideoThumb(item, videoPath, true) }, '지금 장면으로 썸네일 만들기') : null,
       status)));
 }
 
@@ -826,27 +829,84 @@ async function captureThumb(src) {
   }
 }
 
+function setAutoPoster(item, path, blob) {
+  if (!blob?.size) throw new Error('빈 이미지가 나왔습니다.');
+  const file = new File([blob], path.split('/').pop(), { type: blob.type });
+  const prev = item.poster;
+  const old = state.pending.get(path);
+  if (old) URL.revokeObjectURL(old.url);
+  state.pending.set(path, { file, url: URL.createObjectURL(file), auto: true });
+  item.poster = path;
+  if (prev && prev !== path && state.pending.has(prev) && !mediaRefs(state.data).has(prev)) {
+    URL.revokeObjectURL(state.pending.get(prev).url);
+    state.pending.delete(prev);
+  }
+  clearNotice();
+  refresh();
+  root.querySelector('.pane-editor')?.replaceChildren(renderEditor());
+}
+
 async function makeThumb(item, coll) {
   if (!item.src) return;
   if (!ID_RE.test(item.id || '')) { setNotice('썸네일을 만들려면 id를 먼저 올바르게 입력하세요.', true); return; }
-  const path = `media/${coll.folder}/${item.id}/poster.webp`;
   setNotice('모델로 썸네일을 만드는 중…');
   try {
-    const blob = await captureThumb(item.src);
-    if (!blob?.size) throw new Error('빈 이미지가 나왔습니다.');
-    const file = new File([blob], 'poster.webp', { type: 'image/webp' });
-    const prev = item.poster;
-    const old = state.pending.get(path);
-    if (old) URL.revokeObjectURL(old.url);
-    state.pending.set(path, { file, url: URL.createObjectURL(file), auto: true });
-    item.poster = path;
-    if (prev && prev !== path && state.pending.has(prev) && !mediaRefs(state.data).has(prev)) {
-      URL.revokeObjectURL(state.pending.get(prev).url);
-      state.pending.delete(prev);
+    setAutoPoster(item, `media/${coll.folder}/${item.id}/poster.webp`, await captureThumb(item.src));
+  } catch (err) {
+    setNotice(`썸네일을 만들지 못했습니다: ${err.message}`, true);
+  }
+}
+
+const POSTER_WIDTH = 1280;
+const videoThumbRuns = new WeakMap();
+
+function waitFor(el, event, start) {
+  return new Promise((resolve, reject) => {
+    const done = (fn) => () => { clearTimeout(timer); el.removeEventListener(event, ok); el.removeEventListener('error', fail); fn(); };
+    const ok = done(resolve);
+    const fail = done(() => reject(new Error('영상을 불러오지 못했습니다.')));
+    const timer = setTimeout(done(() => reject(new Error('영상을 읽는 데 너무 오래 걸립니다.'))), 15000);
+    el.addEventListener(event, ok);
+    el.addEventListener('error', fail);
+    start?.();
+  });
+}
+
+async function captureFrame(src, at) {
+  const video = h('video', { muted: true, playsinline: true, preload: 'auto' });
+  try {
+    await waitFor(video, 'loadeddata', () => { video.src = mediaUrl(src); });
+    const d = video.duration;
+    const time = at ?? (Number.isFinite(d) ? Math.min(Math.max(d * 0.1, 0.5), Math.max(d - 0.1, 0)) : 0);
+    if (Math.abs(video.currentTime - time) > 0.01) await waitFor(video, 'seeked', () => { video.currentTime = time; });
+    const scale = Math.min(1, POSTER_WIDTH / video.videoWidth);
+    const canvas = h('canvas', { width: Math.round(video.videoWidth * scale), height: Math.round(video.videoHeight * scale) });
+    canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+    const encode = (type) => new Promise((resolve) => canvas.toBlob(resolve, type, 0.85));
+    const webp = await encode('image/webp');
+    return webp?.type === 'image/webp' ? webp : encode('image/jpeg');
+  } finally {
+    video.removeAttribute('src');
+    video.load();
+  }
+}
+
+async function makeVideoThumb(item, src, fromPreview) {
+  const preview = fromPreview ? root.querySelector(`video[data-path="${CSS.escape(src)}"]`) : null;
+  const run = {};
+  videoThumbRuns.set(item, run);
+  const poster = item.poster;
+  setNotice('영상으로 썸네일을 만드는 중…');
+  try {
+    const blob = await captureFrame(src, preview ? preview.currentTime : undefined);
+    const stale = videoThumbRuns.get(item) !== run || ![item.video, item.src].includes(src)
+      || (!fromPreview && item.poster !== poster && !state.pending.get(item.poster)?.auto);
+    if (stale) {
+      if (videoThumbRuns.get(item) === run) clearNotice();
+      return;
     }
-    clearNotice();
-    refresh();
-    root.querySelector('.pane-editor')?.replaceChildren(renderEditor());
+    const ext = blob?.type === 'image/webp' ? 'webp' : 'jpg';
+    setAutoPoster(item, src.replace(/\.[^./]+$/, `-poster.${ext}`), blob);
   } catch (err) {
     setNotice(`썸네일을 만들지 못했습니다: ${err.message}`, true);
   }
@@ -855,7 +915,7 @@ async function makeThumb(item, coll) {
 function renderMediaPreview(kind, path, label) {
   const url = mediaUrl(path);
   if (kind === 'image') return h('div', { class: 'media-preview' }, h('img', { src: url, alt: label }));
-  if (kind === 'video') return h('div', { class: 'media-preview' }, h('video', { src: url, controls: true, preload: 'metadata', playsinline: true }));
+  if (kind === 'video') return h('div', { class: 'media-preview' }, h('video', { src: url, controls: true, preload: 'metadata', playsinline: true, 'data-path': path }));
   const box = h('div', { class: 'media-preview' });
   const anims = h('div', { class: 'media-anims', 'aria-live': 'polite' });
   modelViewerReady ||= import('../vendor/model-viewer.min.js');
