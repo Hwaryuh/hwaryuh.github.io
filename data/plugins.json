@@ -9,7 +9,7 @@
     "env": "Paper 1.21.4 ~ 최신",
     "summary": "사용자가 원하는 모양으로 표시할 수 있는 체력바 시스템입니다.",
     "description": "+ Model Engine 호환",
-    "usesShader": true,
+    "usesShader": false,
     "shaderNote": null,
     "videos": [
       {
