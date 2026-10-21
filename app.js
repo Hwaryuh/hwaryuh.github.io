@@ -324,7 +324,7 @@ function renderDetail(list, id) {
     onclick: () => select(n, true),
   },
   h('span', { class: 'thumb-img' }, v.poster ? h('img', { src: v.poster, alt: '', loading: 'lazy' }) : null),
-  h('span', { class: 'thumb-cap' }, v.caption || `영상 ${n + 1}`)));
+  v.caption ? h('span', { class: 'thumb-cap' }, v.caption) : null));
 
   function select(n, play) {
     const v = videos[n];
