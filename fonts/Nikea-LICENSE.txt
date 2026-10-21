@@ -1,0 +1,8 @@
+Nikea (Version 1.002) by limitype (Muhammad Muammar)
+Source: https://limitype.com/b/AYMXi (downloaded by the site owner from the official page, 2026-10-21)
+
+License as stated on the official page: 100% free for commercial use.
+The font may not be offered for download on other sites, and the license applies only to copies downloaded from the official page.
+
+Nikea-subset.woff2 is a subset of NIKEA.otf that keeps only the glyphs used in "MURINN" and "SEMICOLON STUDIO" (C D E I L M N O R S T U, space).
+It is not a complete, usable copy of the font.

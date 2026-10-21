@@ -1,0 +1,29 @@
+{
+  "name": "MURINN",
+  "intro": "ㅎㅇ요",
+  "team": {
+    "name": "Team Sem;colon",
+    "logo": "media/team/logo.svg",
+    "url": "https://semicolonstudio.kro.kr/"
+  },
+  "discord": "@junkfoodkiller",
+  "discordId": "909085830902059078",
+  "contributions": [
+    {
+      "id": "primary-colony",
+      "server": "Primary Colony",
+      "url": "https://www.patreon.com/collection/2126251",
+      "start": "2025.05",
+      "end": "2026.05",
+      "work": "주요 게임 시스템 개발, SFX 제작"
+    },
+    {
+      "id": "pixel-creator-town-2",
+      "server": "픽셀 크리에이터 타운 2",
+      "url": "https://namu.wiki/w/%ED%94%BD%EC%85%80%20%ED%81%AC%EB%A6%AC%EC%97%90%EC%9D%B4%ED%84%B0%20%ED%83%80%EC%9A%B4%202",
+      "start": "2025.08",
+      "end": "2026.02",
+      "work": "플레이어 스킬 및 펫 메커니즘 제작 (MythicMobs, Java)"
+    }
+  ]
+}

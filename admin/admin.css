@@ -1,0 +1,246 @@
+/* 관리자 페이지. 색과 글꼴 토큰은 ../style.css의 :root를 그대로 쓴다. */
+
+:root {
+  --error: #b42318;
+  --admin-bar: 64px;
+}
+
+body.admin { min-height: 100vh; }
+
+.admin .btn {
+  height: 40px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 4px;
+  background: var(--control);
+  color: var(--fg);
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.admin .btn:hover { background: var(--control-hover); }
+.admin .btn.primary { background: var(--fg); color: #ffffff; }
+.admin .btn.primary:hover { background: #2e2e2e; }
+.admin .btn.small { height: 32px; padding: 0 10px; font-size: 13px; }
+.admin .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* 게시 전까지 남는 변경 표시 */
+.mark { display: inline-block; width: 8px; height: 8px; flex-shrink: 0; background: var(--fg); }
+.mark.off { visibility: hidden; }
+
+.muted { color: var(--muted); font-size: 13px; }
+.err { color: var(--error); font-size: 13px; }
+
+/* 입력 */
+
+.field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.field > span:first-child, .field > label:first-child { font-size: 12px; color: var(--muted); }
+.field .req { color: var(--fg); }
+
+.admin input[type="text"],
+.admin input[type="password"],
+.admin input[type="url"],
+.admin select,
+.admin textarea {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: 4px;
+  background: #ffffff;
+  color: var(--fg);
+  font: inherit;
+  font-size: 15px;
+}
+
+.admin textarea { min-height: 120px; line-height: 1.6; resize: vertical; }
+.admin input:focus-visible, .admin select:focus-visible, .admin textarea:focus-visible { outline: 2px solid var(--fg); outline-offset: 0; }
+.field.invalid input, .field.invalid textarea, .field.invalid select { border-color: var(--error); }
+
+.check { display: flex; align-items: center; gap: 10px; min-height: 44px; font-size: 15px; }
+.check input { width: 18px; height: 18px; accent-color: var(--fg); }
+
+/* 로그인 */
+
+.login {
+  width: min(440px, 100% - 32px);
+  margin: 12vh auto 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.login h1 { font-size: 28px; font-weight: 700; }
+.login .row2 { display: grid; grid-template-columns: 1fr 140px; gap: 12px; }
+.login .help { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+/* 상단 막대 */
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  height: var(--admin-bar);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 24px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+
+.topbar .title { font-size: 15px; font-weight: 700; }
+.topbar .spacer { flex-grow: 1; }
+.topbar .changes { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+
+.notice {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+}
+
+.notice.error { color: var(--error); }
+
+/* 세 칸 작업대 */
+
+.workbench {
+  display: grid;
+  grid-template-columns: 220px 300px minmax(0, 1fr);
+  min-height: calc(100vh - var(--admin-bar));
+}
+
+.pane { min-width: 0; border-right: 1px solid var(--line); }
+
+/* 긴 폼을 스크롤해도 컬렉션과 항목 칸은 제자리에 남는다. */
+.pane-collections, .pane-items {
+  position: sticky;
+  top: var(--admin-bar);
+  align-self: start;
+  height: calc(100vh - var(--admin-bar));
+  overflow-y: auto;
+}
+.pane:last-child { border-right: none; }
+.pane-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; height: 56px; padding: 0 20px; border-bottom: 1px solid var(--line); }
+.pane-head h2 { font-size: 13px; font-weight: 500; color: var(--muted); }
+
+.collections { list-style: none; margin: 0; padding: 8px 0; }
+
+.coll {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  height: 44px;
+  padding: 0 20px;
+  border: none;
+  background: transparent;
+  font-size: 15px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.coll:hover { background: var(--control); }
+.coll[aria-current="true"] { background: var(--line); font-weight: 700; }
+.coll .count { margin-left: auto; font-size: 13px; color: var(--muted); font-weight: 400; }
+
+.items { list-style: none; margin: 0; padding: 0; }
+.items > li { border-bottom: 1px solid var(--line); }
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 64px;
+  padding: 8px 12px 8px 20px;
+}
+
+.item[aria-current="true"] { background: var(--line); }
+
+.item-open {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-grow: 1;
+  min-width: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.item-thumb { width: 44px; height: 44px; flex-shrink: 0; border-radius: 8px; overflow: hidden; background: var(--thumb); }
+.item-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.item-name { display: block; font-size: 15px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.item-sub { display: block; font-size: 12px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.item-name.empty { color: var(--muted); font-weight: 400; }
+.item-moves { display: flex; gap: 4px; }
+.item-moves .btn { display: inline-flex; align-items: center; justify-content: center; min-width: 32px; }
+
+.confirm { display: flex; flex-direction: column; gap: 8px; padding: 12px 20px; background: var(--control); font-size: 14px; }
+.confirm .btns { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.empty-pane { padding: 24px 20px; color: var(--muted); font-size: 14px; }
+
+/* 편집 폼 */
+
+.editor { padding: 28px 40px 64px; max-width: 920px; }
+.editor-head { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+.editor-head h2 { font-size: 28px; font-weight: 700; }
+.form { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 24px; }
+.form .full { grid-column: 1 / -1; }
+
+.media { display: flex; flex-direction: column; gap: 10px; }
+.media-path { font-size: 13px; color: var(--muted); word-break: break-all; }
+.media-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.media-actions input[type="file"] { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.media-preview { border-radius: 12px; overflow: hidden; background: var(--media); }
+
+/* 파일이 없을 때도 미디어가 놓일 검은 칸을 보여준다 (Lightbox Rule). */
+.media-empty { display: flex; align-items: center; justify-content: center; width: min(444px, 100%); aspect-ratio: 444 / 250; border-radius: 12px; background: var(--media); color: var(--panel-muted); font-size: 13px; }
+.media-empty.square { width: 120px; aspect-ratio: 1; }
+.media-preview img, .media-preview video { display: block; max-width: 100%; max-height: 280px; margin: 0 auto; }
+.media-preview model-viewer { display: block; width: 100%; height: 300px; background: var(--panel); --poster-color: transparent; }
+.media-anims { display: flex; flex-wrap: wrap; gap: 6px; font-size: 13px; }
+.media-anims { align-items: center; }
+.media-anims .btn[aria-pressed="true"] { background: var(--fg); color: #ffffff; }
+
+.subitems { display: flex; flex-direction: column; gap: 16px; }
+.subitem { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 16px; border: 1px solid var(--line); border-radius: 4px; }
+.subitem .full { grid-column: 1 / -1; }
+.subitem-head { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 13px; color: var(--muted); }
+
+.editor-foot { display: flex; justify-content: flex-end; gap: 8px; margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--line); }
+
+/* 미리보기 */
+
+.preview { height: calc(100vh - var(--admin-bar)); }
+.preview iframe { display: block; width: 100%; height: 100%; border: 0; background: var(--bg); }
+
+/* 모바일: 한 번에 한 칸씩 */
+
+.pane-back, .mobile-only { display: none; }
+.pane-head .pane-back + h2 { margin-right: auto; }
+
+@media (max-width: 767px) {
+  .topbar { padding: 0 16px; gap: 8px; }
+
+  .topbar .repo, .topbar .logout { display: none; }
+  .workbench { grid-template-columns: 1fr; }
+  .pane { display: none; border-right: none; }
+  .workbench[data-pane="collections"] .pane-collections,
+  .workbench[data-pane="items"] .pane-items,
+  .workbench[data-pane="editor"] .pane-editor { display: block; }
+  .pane-back { display: inline-flex; align-items: center; gap: 6px; }
+  .mobile-only { display: block; padding: 16px 20px; border-top: 1px solid var(--line); }
+  .pane-collections, .pane-items { position: static; height: auto; overflow: visible; }
+  /* 휴대폰에서는 모든 컨트롤을 44px로 키운다. 데스크톱의 40/32px은 주로 PC에서 쓴다는 답을 근거로 둔 밀도다. */
+  .admin .btn, .admin .btn.small { height: 44px; min-width: 44px; }
+  .editor { padding: 20px 16px 48px; }
+  .form, .subitem { grid-template-columns: 1fr; }
+}

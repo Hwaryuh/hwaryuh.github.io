@@ -1,0 +1,18 @@
+[
+  {
+    "id": "object-sfx",
+    "title": "오브젝트 SFX",
+    "description": "개인 프로젝트 작업물입니다.",
+    "credit": null,
+    "video": "media/sfx/object-sfx/video.mp4",
+    "poster": "media/sfx/object-sfx/poster.jpg"
+  },
+  {
+    "id": "boss-sfx",
+    "title": "보스 SFX",
+    "description": "<치미망량> 보스 '치기'의 효과음 데모입니다.",
+    "credit": "모델링 @pixel_hoon",
+    "video": "media/sfx/boss-sfx/video.mp4",
+    "poster": "media/sfx/boss-sfx/poster.jpg"
+  }
+]
