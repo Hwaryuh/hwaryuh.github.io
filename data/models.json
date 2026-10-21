@@ -3,7 +3,7 @@
     "id": "dudn",
     "name": "여우",
     "src": "media/models/dudn/model.glb",
-    "poster": "media/models/dudn/poster.webp",
+    "poster": "media/models/dudn/poster.png",
     "meta": null,
     "credit": "애니메이션 @y.a.n."
   },
@@ -11,7 +11,7 @@
     "id": "health-pack",
     "name": "힐팩(오버워치)",
     "src": "media/models/health-pack/model.glb",
-    "poster": "media/models/health-pack/poster.webp",
+    "poster": "media/models/health-pack/poster.png",
     "meta": null,
     "credit": null
   },
@@ -19,7 +19,7 @@
     "id": "blind-godness",
     "name": "Hannah",
     "src": "media/models/blind-godness/model.glb",
-    "poster": "media/models/blind-godness/poster.webp",
+    "poster": "media/models/blind-godness/poster.gif",
     "meta": null,
     "credit": null
   },
@@ -27,7 +27,7 @@
     "id": "hound",
     "name": "불사의 사냥개(다크소울 1)",
     "src": "media/models/hound/model.glb",
-    "poster": "media/models/hound/poster.webp",
+    "poster": "media/models/hound/poster.png",
     "meta": null,
     "credit": null
   },
@@ -35,7 +35,7 @@
     "id": "scythe",
     "name": "무기 연습",
     "src": "media/models/dd/model.glb",
-    "poster": "media/models/dd/poster.webp",
+    "poster": "media/models/scythe/poster.png",
     "meta": null,
     "credit": null
   },
@@ -43,7 +43,7 @@
     "id": "blood-guandao",
     "name": "무기 연습",
     "src": "media/models/blood-guandao/model.glb",
-    "poster": "media/models/blood-guandao/poster.webp",
+    "poster": "media/models/blood-guandao/poster.png",
     "meta": null,
     "credit": null
   }
