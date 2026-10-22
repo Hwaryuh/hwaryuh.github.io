@@ -84,8 +84,6 @@ function period(start, end, status) {
   return STATUS[status] ? `${start} – ${STATUS[status]}` : start;
 }
 
-const joinDot = (...parts) => parts.filter(Boolean).join(' · ');
-
 // JSON 형태가 어긋나도 렌더링이 멈추지 않게 객체와 배열을 걸러낸다.
 const obj = (v) => (v && typeof v === 'object' && !Array.isArray(v) ? v : {});
 const arr = (v) => (Array.isArray(v) ? v.filter((x) => x && typeof x === 'object' && !Array.isArray(x)) : []);
@@ -355,7 +353,8 @@ function renderDetail(list, id) {
   function select(n, play) {
     const v = videos[n];
     stage?.load({ src: v.src, poster: v.poster, label: v.caption || pl.title }, play);
-    caption.textContent = joinDot(v.caption, `${n + 1} / ${videos.length}`);
+    caption.textContent = v.caption || '';
+    caption.hidden = !v.caption;
     thumbs.forEach((t, k) => t.setAttribute('aria-pressed', String(k === n)));
   }
   if (videos.length) select(0, false);
