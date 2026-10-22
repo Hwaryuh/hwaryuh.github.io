@@ -1,17 +1,9 @@
 [
   {
-    "id": "dudn",
-    "name": "여우",
-    "src": "media/models/dudn/model.glb",
-    "poster": "media/models/dudn/poster.png",
-    "meta": null,
-    "credit": "애니메이션 @y.a.n."
-  },
-  {
-    "id": "health-pack",
-    "name": "힐팩(오버워치)",
-    "src": "media/models/health-pack/model.glb",
-    "poster": "media/models/health-pack/poster.png",
+    "id": "knights",
+    "name": "기사단",
+    "src": "media/models/knights/model.glb",
+    "poster": "media/models/knights/poster.png",
     "meta": null,
     "credit": null
   },
@@ -24,10 +16,26 @@
     "credit": null
   },
   {
+    "id": "dudn",
+    "name": "여우",
+    "src": "media/models/dudn/model.glb",
+    "poster": "media/models/dudn/poster.png",
+    "meta": null,
+    "credit": "애니메이션 @y.a.n."
+  },
+  {
     "id": "hound",
-    "name": "불사의 사냥개(다크소울 1)",
+    "name": "사냥개(다크 소울)",
     "src": "media/models/hound/model.glb",
     "poster": "media/models/hound/poster.png",
+    "meta": null,
+    "credit": null
+  },
+  {
+    "id": "health-pack",
+    "name": "힐팩(오버워치)",
+    "src": "media/models/health-pack/model.glb",
+    "poster": "media/models/health-pack/poster.png",
     "meta": null,
     "credit": null
   },
