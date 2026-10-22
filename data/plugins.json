@@ -6,7 +6,7 @@
     "start": "2025.06.18",
     "end": "2025.06.20",
     "status": "done",
-    "env": "Paper 1.21.4 ~ 최신",
+    "env": "Paper 1.21.4 ~ 최신 / 바닐라 클라이언트",
     "summary": "사용자가 원하는 모양으로 표시할 수 있는 체력바 플러그인입니다.",
     "description": "+ Model Engine 호환",
     "usesShader": false,
@@ -25,22 +25,22 @@
     ]
   },
   {
-    "id": "client-compass",
-    "title": "나침반",
+    "id": "grip",
+    "title": "Grip",
     "subtitle": "",
-    "start": "2026.10.09",
-    "end": "2026.10.09",
-    "status": "done",
-    "env": "Paper 26.3",
-    "summary": "클라이언트 렌더 기반 나침반 플러그인입니다.",
-    "description": "<엘든 링>에서 영감을 받아 제작했습니다.\n서버 측 부하 및 지연에 영향 없이 클라이언트에서 계산하여 표시합니다.",
+    "start": "2026.04.03",
+    "end": null,
+    "status": "wip",
+    "env": "Paper 1.21.4 ~ 최신 / 바닐라 클라이언트",
+    "summary": "1인칭 애니메이션 플러그인입니다.",
+    "description": "- 독립 애니메이션 엔진\n- 양 손 가시성 제어\n- 클라이언트 옵션(주로 사용하는 손)을 따름\n- 아이템 전환 애니메이션 지원\n- 아이템별 손을 쥐는 위치 및 각도 제어",
     "usesShader": false,
     "shaderNote": null,
     "videos": [
       {
-        "src": "media/plugins/client-compass/2026-10-09-07-46-37.mp4",
-        "poster": "media/plugins/client-compass/2026-10-09-07-46-37-poster.webp",
-        "caption": ""
+        "src": "media/plugins/grip/2026-10-16-13-16-06.mp4",
+        "poster": "media/plugins/grip/2026-10-16-13-16-06-poster.webp",
+        "caption": "테스트 (양손)"
       }
     ]
   },
@@ -66,6 +66,26 @@
         "src": "media/plugins/focal/2026-09-24-09-35.mp4",
         "poster": "media/plugins/focal/2026-09-24-09-35-poster.webp",
         "caption": "시야각(FOV) 테스트"
+      }
+    ]
+  },
+  {
+    "id": "client-compass",
+    "title": "나침반",
+    "subtitle": "",
+    "start": "2026.10.09",
+    "end": "2026.10.09",
+    "status": "done",
+    "env": "Paper 26.3 / 바닐라 클라이언트",
+    "summary": "클라이언트 렌더 기반 나침반 플러그인입니다.",
+    "description": "<엘든 링>에서 영감을 받아 제작했습니다.\n서버 측 부하 및 지연에 영향 없이 클라이언트에서 계산하여 표시합니다.",
+    "usesShader": false,
+    "shaderNote": null,
+    "videos": [
+      {
+        "src": "media/plugins/client-compass/2026-10-09-07-46-37.mp4",
+        "poster": "media/plugins/client-compass/2026-10-09-07-46-37-poster.webp",
+        "caption": ""
       }
     ]
   }
