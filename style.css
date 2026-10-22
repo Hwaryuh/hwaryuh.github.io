@@ -613,6 +613,8 @@ a.team-name { cursor: pointer; }
   color: var(--muted);
 }
 
+#footer > span { white-space: nowrap; }
+
 /* 가는 넓은 자간의 윗줄과 굵은 아랫줄 */
 .powered { grid-row: 2; grid-column: 2; display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--fg); text-transform: uppercase; line-height: 1; }
 .powered-by { font-size: 10px; font-weight: 300; letter-spacing: 0.32em; margin-right: -0.32em; }
