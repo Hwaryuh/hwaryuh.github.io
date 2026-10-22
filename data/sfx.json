@@ -10,7 +10,7 @@
   {
     "id": "primary-colony-opening",
     "title": "컷신 효과음",
-    "description": "Primary Colony 오프닝 컷신에 등장하는 우주선 효과음입니다.",
+    "description": "Primary Colony 오프닝 컷신의 우주선 효과음입니다.",
     "credit": "블럭 컨버팅 @y.a.n.\n애니메이션 @pokmagoon04\n앰비언트 @repl0nline",
     "video": "media/sfx/primary-colony-opening/video.mp4",
     "poster": "media/sfx/primary-colony-opening/video-poster.webp"
@@ -18,7 +18,7 @@
   {
     "id": "boss-sfx",
     "title": "보스 효과음",
-    "description": "<치미망량> 보스 '치기'의 효과음 데모입니다.",
+    "description": "팀 프로젝트 보스의 효과음 데모입니다.",
     "credit": "모델링 @pixel_hoon",
     "video": "media/sfx/boss-sfx/video.mp4",
     "poster": "media/sfx/boss-sfx/poster.jpg"

@@ -1,13 +1,13 @@
 [
   {
     "id": "health-bar",
-    "title": "체력바 시스템",
+    "title": "체력바",
     "subtitle": "",
     "start": "2025.06.18",
     "end": "2025.06.20",
     "status": "done",
     "env": "Paper 1.21.4 ~ 최신",
-    "summary": "사용자가 원하는 모양으로 표시할 수 있는 체력바 시스템입니다.",
+    "summary": "사용자가 원하는 모양으로 표시할 수 있는 체력바 플러그인입니다.",
     "description": "+ Model Engine 호환",
     "usesShader": false,
     "shaderNote": null,
@@ -21,6 +21,51 @@
         "src": "media/plugins/health-bar/healthbar_attack.mp4",
         "poster": "media/plugins/health-bar/healthbar_attack-poster.webp",
         "caption": ""
+      }
+    ]
+  },
+  {
+    "id": "client-compass",
+    "title": "나침반",
+    "subtitle": "",
+    "start": "2026.10.09",
+    "end": "2026.10.09",
+    "status": "done",
+    "env": "Paper 26.3",
+    "summary": "클라이언트 렌더 기반 나침반 플러그인입니다.",
+    "description": "<엘든 링>에서 영감을 받아 제작했습니다.\n서버 측 부하 및 지연에 영향 없이 클라이언트에서 계산하여 표시합니다.",
+    "usesShader": false,
+    "shaderNote": null,
+    "videos": [
+      {
+        "src": "media/plugins/client-compass/2026-10-09-07-46-37.mp4",
+        "poster": "media/plugins/client-compass/2026-10-09-07-46-37-poster.webp",
+        "caption": ""
+      }
+    ]
+  },
+  {
+    "id": "focal",
+    "title": "Focal",
+    "subtitle": "서버사이드 카메라 제어 플러그인",
+    "start": "2026.09.24",
+    "end": null,
+    "status": "wip",
+    "env": "Paper 26.3 / 바닐라 클라이언트",
+    "summary": "서버사이드 카메라 제어 플러그인입니다.",
+    "description": "모드 의존 없이 플레이어별 기울기와 시야각을 제어할 수 있습니다.",
+    "usesShader": false,
+    "shaderNote": null,
+    "videos": [
+      {
+        "src": "media/plugins/focal/2026-09-24-09-38-00.mp4",
+        "poster": "media/plugins/focal/2026-09-24-09-38-00-poster.webp",
+        "caption": "기울기(Roll) 테스트"
+      },
+      {
+        "src": "media/plugins/focal/2026-09-24-09-35.mp4",
+        "poster": "media/plugins/focal/2026-09-24-09-35-poster.webp",
+        "caption": "시야각(FOV) 테스트"
       }
     ]
   }
