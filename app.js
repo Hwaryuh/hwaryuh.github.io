@@ -499,12 +499,11 @@ function buildPanel(item) {
     if (item.poster && !viewer.querySelector(':scope > img')) viewer.prepend(h('img', { src: item.poster, alt: item.name }));
   };
 
+  showPoster();
   if (item.src) {
     loadModelViewer().then(() => {
       const mv = h('model-viewer', {
         src: item.src,
-        // 모델을 받는 동안 썸네일을 보여준다.
-        poster: item.poster,
         alt: item.name,
         'camera-controls': true,
         // 처음 보이는 각도: 비스듬한 3/4 시점
@@ -515,6 +514,7 @@ function buildPanel(item) {
       });
       mv.addEventListener('load', () => {
         shadeLikeBlockbench(mv);
+        requestAnimationFrame(() => requestAnimationFrame(() => viewer.classList.toggle('ready', mv.isConnected)));
         const names = mv.availableAnimations || [];
         if (!names.length) return;
         const pick = (name) => {
@@ -528,11 +528,9 @@ function buildPanel(item) {
         pick(names[0]);
       });
       // 모델을 불러오지 못하면 뷰어 대신 썸네일을 둔다.
-      mv.addEventListener('error', () => { mv.remove(); showPoster(); });
+      mv.addEventListener('error', () => { mv.remove(); viewer.classList.remove('ready'); showPoster(); });
       viewer.prepend(mv);
     }).catch(showPoster);
-  } else {
-    showPoster();
   }
 
   return h('div', { class: 'panel', role: 'region', 'aria-label': item.name },
