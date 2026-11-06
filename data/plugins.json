@@ -88,5 +88,40 @@
         "caption": ""
       }
     ]
+  },
+  {
+    "id": "minimap",
+    "title": "미니맵",
+    "subtitle": "",
+    "start": "2026.02.22",
+    "end": null,
+    "status": "wip",
+    "env": "Paper 1.21.8 ~ 26.3 / 바닐라 클라이언트",
+    "summary": "서버사이드 미니맵 플러그인입니다.",
+    "description": "https://github.com/JNNGL/VanillaMinimaps 프로젝트를 기반으로 구조 및 성능 개선, 서버 버전 업데이트 등을 진행하고 있습니다.",
+    "usesShader": false,
+    "shaderNote": null,
+    "videos": [
+      {
+        "src": "media/plugins/minimap/2026-02-24_23-40-25.mp4",
+        "poster": "media/plugins/minimap/2026-02-24_23-40-25-poster.webp",
+        "caption": "플레이어의 현재 밝기 반영"
+      },
+      {
+        "src": "media/plugins/minimap/2026-02-26_17-35-21.mp4",
+        "poster": "media/plugins/minimap/2026-02-26_17-35-21-poster.webp",
+        "caption": "풀 스크린 (현재 지원하지 않음)"
+      },
+      {
+        "src": "media/plugins/minimap/2026-07-09-21-45-07.mp4",
+        "poster": "media/plugins/minimap/2026-07-09-21-45-07-poster.webp",
+        "caption": "기능 추가: 안개"
+      },
+      {
+        "src": "media/plugins/minimap/2026-09-20-02-00-10.mp4",
+        "poster": "media/plugins/minimap/2026-09-20-02-00-10-poster.webp",
+        "caption": "포스트 셰이더 연동"
+      }
+    ]
   }
 ]
