@@ -8,8 +8,8 @@ const TOKEN_KEY = 'murinn-admin-token';
 const REPO_KEY = 'murinn-admin-repo';
 const DRAFT_PREFIX = 'murinn-admin-draft:';
 const DATA_FILES = ['profile', 'plugins', 'models', 'sfx'];
-const WARN_BYTES = 50 * 1024 * 1024;
-const MAX_BYTES = 95 * 1024 * 1024; // GitHub 단일 파일 한도 100MB에 가까우면 막는다.
+const WARN_BYTES = 20 * 1024 * 1024;
+const MAX_BYTES = 30 * 1024 * 1024; // base64로 올리면 약 33% 커지고, GitHub blob API는 요청 본문이 크면 422로 거부한다 (41MB에서 실패 확인).
 
 /* DOM */
 
@@ -287,6 +287,7 @@ function explain(err) {
   if (err.status === 401) return '토큰이 올바르지 않거나 만료됐습니다.';
   if (err.status === 403) return '권한이 없습니다. 토큰에 이 저장소의 Contents 읽기·쓰기 권한이 있는지 확인하세요.';
   if (err.status === 404) return '저장소나 브랜치를 찾을 수 없습니다. 이름과 토큰의 저장소 선택을 확인하세요.';
+  if (err.status === 422 && /too large/i.test(err.message)) return '파일이 너무 커서 GitHub가 받지 못했습니다. 영상은 줄이거나 길이를 잘라서 다시 올리세요.';
   if (err.status === 409 || err.status === 422) return `GitHub가 요청을 거부했습니다 (${err.status}): ${err.message}`;
   return `GitHub 오류 ${err.status}: ${err.message}`;
 }
@@ -794,7 +795,7 @@ function sanitizeName(name) {
 async function checkFile(file, kind) {
   const ext = file.name.split('.').pop().toLowerCase();
   if (!MEDIA[kind].exts.includes(ext)) return `${MEDIA[kind].label} 파일만 올릴 수 있습니다 (${MEDIA[kind].exts.join(', ')}).`;
-  if (file.size >= MAX_BYTES) return '파일이 너무 큽니다. 95MB 미만이어야 합니다 (GitHub 한도 100MB).';
+  if (file.size >= MAX_BYTES) return `파일이 너무 큽니다. ${MAX_BYTES / 1048576}MB 미만이어야 합니다. 영상은 줄이거나 길이를 잘라서 올리세요.`;
   const b = new Uint8Array(await file.slice(0, 12).arrayBuffer());
   const ascii = (from, to) => String.fromCharCode(...b.slice(from, to));
   const ok = {
