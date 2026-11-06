@@ -491,8 +491,7 @@ function renderModels(items) {
 
 function buildPanel(item) {
   const viewer = h('div', { class: 'viewer' });
-  const animLabel = h('p', { class: 'panel-label', hidden: true }, '애니메이션');
-  const anims = h('div', { class: 'anims', hidden: true });
+  const anims = h('div', { class: 'anims', role: 'group', 'aria-label': '애니메이션', hidden: true });
 
   const showPoster = () => {
     if (item.poster && !viewer.querySelector(':scope > img')) viewer.prepend(h('img', { src: item.poster, alt: item.name }));
@@ -522,7 +521,6 @@ function buildPanel(item) {
           for (const b of anims.children) b.setAttribute('aria-pressed', String(b.textContent === name));
         };
         anims.replaceChildren(...names.map((name) => h('button', { type: 'button', class: 'anim', onclick: () => pick(name) }, name)));
-        animLabel.hidden = false;
         anims.hidden = false;
         pick(names[0]);
       });
@@ -537,7 +535,6 @@ function buildPanel(item) {
     h('div', { class: 'panel-info' },
       h('h3', null, item.name),
       item.meta ? h('p', { class: 'panel-meta' }, item.meta) : null,
-      animLabel,
       anims,
       item.credit ? h('p', { class: 'panel-credit' }, item.credit) : null));
 }
